@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Crispy Pizza Hub</title>
+  <meta name="description" content="Full menu — pizzas, burgers, rolls, pasta, appetizers and shakes.">
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.svg" alt="Crispy Pizza Hub logo">
+      <span class="brand-name text-gradient">Crispy Pizza Hub</span>
+    </a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="page-header animate-fade-up">
+  <p class="page-eyebrow">OUR CRAFT</p>
+  <h1 class="page-title text-gradient">The Full Menu</h1>
+  <p class="page-sub">Tap any item to add it to your cart. Pick a size if available, then check out via WhatsApp.</p>
+</section>
+
+<div class="menu-section-title"><h2 id="t-pizzas">🍕 Pizzas</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-pizzas"></section>
+
+<div class="menu-section-title"><h2 id="t-burgers">🍔 Burgers</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-burgers"></section>
+
+<div class="menu-section-title"><h2 id="t-rolls">🌯 Shawarma & Rolls</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-rolls"></section>
+
+<div class="menu-section-title"><h2 id="t-pasta">🍝 Pasta Lovers</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-pasta"></section>
+
+<div class="menu-section-title"><h2 id="t-app">🍗 Appetizers & Sides</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-app"></section>
+
+<div class="menu-section-title"><h2 id="t-drinks">🥤 Drinks & Shakes</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-drinks"></section>
+
+<div class="menu-section-title"><h2 id="t-ice">🍦 Ice Cream</h2><span class="line"></span></div>
+<section class="menu-grid" id="grid-ice"></section>
+
+<section style="text-align:center; padding: 3rem 1.5rem;">
+  <a href="#" onclick="event.preventDefault(); transitionTo('coffee.html','Stepping into the Coffee World ☕')" class="btn btn-primary">☕ Enter Coffee World</a>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner footer">
+    <div>
+      <div class="footer-brand"><img src="assets/logo.svg" alt="Logo"><span class="text-gradient">Crispy Pizza Hub</span></div>
+      <p>Wood-fired, hand-tossed, made daily.</p>
+    </div>
+    <div>
+      <h3>Visit Us</h3>
+      <ul>
+        <li>📍 Branch 1: Main G.T Road, Adda Gamber, Okara Cantt.</li>
+        <li>📍 Branch 2: Opp. Main Gate Jeewan City, Sahiwal</li>
+        <li>📞 0304-9631321 · 0307-1975852</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Order Direct</h3>
+      <p>Tap the cart, fill in your details, and your order is sent straight to our WhatsApp.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMenuSection('grid-pizzas', window.MENU.pizzas);
+    renderMenuSection('grid-burgers', window.MENU.burgers);
+    renderMenuSection('grid-rolls', window.MENU.rolls);
+    renderMenuSection('grid-pasta', window.MENU.pasta);
+    renderMenuSection('grid-app', window.MENU.appetizers);
+    renderMenuSection('grid-drinks', window.MENU.drinks);
+    renderMenuSection('grid-ice', window.MENU.icecream);
+  });
+</script>
+</body>
+</html>

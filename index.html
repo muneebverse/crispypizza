@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crispy Pizza Hub — Wood-Fired Pizza, Burgers & Coffee</title>
+  <meta name="description" content="Crispy Pizza Hub — wood-fired pizzas, juicy burgers, rolls, shakes and a full coffee bar. Order on WhatsApp.">
+  <link rel="icon" href="assets/logo.jpg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.jpg" alt="Crispy Pizza Hub logo">
+      <span class="brand-name text-gradient">Crispy Pizza Hub</span>
+    </a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="hero" style="background-color:#3a1a14;">
+  <div class="hero-glow" id="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="animate-fade-up">
+      <p class="hero-eyebrow" id="hero-eyebrow">CINEMATIC SLICE №1</p>
+      <h1 class="hero-title" id="hero-title"></h1>
+      <p class="hero-tagline" id="hero-tagline"></p>
+      <div class="hero-actions">
+        <a href="menu.html" class="btn btn-primary">Order Now</a>
+        <a href="#" class="btn btn-ghost" onclick="event.preventDefault(); transitionTo('coffee.html','Stepping into the Coffee World ☕')">Enter Coffee World →</a>
+      </div>
+    </div>
+    <div class="pizza-stage">
+      <div class="pizza-blur"></div>
+      <div class="pizza-wrap animate-scale-pop" id="pizza-wrap">
+        <img id="pizza-img" class="pizza-img" src="assets/pizzas/special.jpg" alt="Pizza">
+      </div>
+      <button class="arrow left"  id="prev-btn" aria-label="Previous pizza">‹</button>
+      <button class="arrow right" id="next-btn" aria-label="Next pizza">›</button>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<section class="features">
+  <div class="feature">
+    <div class="feature-icon">🔥</div>
+    <h3>Wood-Fired</h3>
+    <p>900°F brick ovens for that perfect crispy char.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">⏱️</div>
+    <h3>10 Min Bake</h3>
+    <p>Fast, fresh, and unbelievably crispy every time.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">🚚</div>
+    <h3>Hot Delivery</h3>
+    <p>From oven to door in under 30 minutes.</p>
+  </div>
+</section>
+
+<section class="page-header">
+  <p class="page-eyebrow">QUICK BITES</p>
+  <h2 class="page-title text-gradient">Featured Today</h2>
+  <p class="page-sub">A taste of what's hot on the menu.</p>
+</section>
+<section class="menu-grid" id="featured-grid"></section>
+
+<section style="text-align:center; padding: 3rem 1.5rem 1rem;">
+  <a href="menu.html" class="btn btn-primary">View Full Menu →</a>
+</section>
+
+<!-- ===== CHEF'S TOP CHOICE ===== -->
+<section class="chef-section">
+  <div class="page-header" style="padding: 2rem 0 1rem;">
+    <p class="page-eyebrow">FROM THE KITCHEN</p>
+    <h2 class="page-title text-gradient">Chef's Top Choice</h2>
+  </div>
+  <div class="chef-banner">
+    <div class="chef-avatar" aria-hidden="true">👨‍🍳</div>
+    <div>
+      <span class="chef-tag">CHEF'S PICK</span>
+      <p class="chef-name">— Chef Imran, Head Chef</p>
+      <p class="chef-quote">“Our Chicken Special with extra cheese is a labour of love — wood-fired crust, house sauce, and three cheeses melted to perfection. If you order one thing tonight, make it this.”</p>
+      <p class="chef-pick">Tonight's pick: <strong>Chicken Special Pizza</strong> · paired best with a hot <strong>Cappuccino</strong> from the Coffee World.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="reviews-section">
+  <div class="page-header" style="padding: 1rem 1.5rem 2rem;">
+    <p class="page-eyebrow">★★★★★ GOOGLE REVIEWS</p>
+    <h2 class="page-title text-gradient">What Our Guests Say</h2>
+    <p class="page-sub">Real reviews from real customers — straight from Google.</p>
+  </div>
+  <div id="reviews-mount"></div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner footer">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo.jpg" alt="Logo">
+        <span class="text-gradient">Crispy Pizza Hub</span>
+      </div>
+      <p>Wood-fired pizzas, juicy burgers, rolls, shakes — and a full coffee bar. Free home delivery.</p>
+    </div>
+    <div>
+      <h3>Visit Us</h3>
+      <ul>
+        <li>📍 Branch 1: Main G.T Road, Adda Gamber, Okara Cantt.</li>
+        <li>📍 Branch 2: Opp. Main Gate Jeewan City, Madhali Road, Sahiwal</li>
+        <li>📞 0304-9631321 · 0307-1975852</li>
+        <li>🛵 Minimum order Rs. 600 (Gamber & Cantt)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Follow Us</h3>
+      <div class="socials">
+        <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+        <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h3l1-4h-4V7.5c0-1 .3-2 2-2h2V2h-3c-3 0-5 1.8-5 5v3H6v4h3v8h4z"/></svg></a>
+        <a href="https://wa.me/923049631321" target="_blank" rel="noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.9 11.9 0 0012 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.7 6L0 24l6.2-1.6A11.9 11.9 0 0012 24c6.6 0 12-5.4 12-12 0-3.2-1.3-6.2-3.5-8.5z"/></svg></a>
+      </div>
+      <p style="margin-top:1.25rem; font-size:0.8rem;">Open daily • 11 AM – Midnight</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub. Crafted with extra cheese.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/home.js"></script>
+<script>
+  // Featured = first 4 pizzas + 2 burgers
+  document.addEventListener('DOMContentLoaded', () => {
+    const featured = {
+      items: [
+        ...window.MENU.pizzas.items.slice(0, 4),
+        ...window.MENU.burgers.items.slice(0, 2),
+      ]
+    };
+    renderMenuSection('featured-grid', featured);
+    if (window.renderReviews) window.renderReviews('reviews-mount');
+  });
+</script>
+</body>
+</html>

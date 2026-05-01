@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Crispy Pizza Hub</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand"><img src="assets/logo.svg" alt="Logo"><span class="brand-name text-gradient">Crispy Pizza Hub</span></a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="page-header animate-fade-up">
+  <p class="page-eyebrow">SAY HELLO</p>
+  <h1 class="page-title text-gradient">Get In Touch</h1>
+  <p class="page-sub">Quickest way to order? Tap any menu item and check out via WhatsApp.</p>
+</section>
+
+<section class="contact-grid">
+  <div>
+    <div class="contact-card"><div class="contact-icon">📞</div><div><h3>Call / WhatsApp</h3><p>0304-9631321<br>0307-1975852</p></div></div>
+    <div class="contact-card"><div class="contact-icon">📍</div><div><h3>Branch 1</h3><p>Main G.T Road, Adda Gamber, Okara Cantt.</p></div></div>
+    <div class="contact-card"><div class="contact-icon">📍</div><div><h3>Branch 2</h3><p>Opp. Main Gate Jeewan City, Madhali Road, Sahiwal</p></div></div>
+    <div class="contact-card"><div class="contact-icon">⏰</div><div><h3>Hours</h3><p>Daily 11 AM – Midnight</p></div></div>
+  </div>
+  <div>
+    <a href="https://wa.me/923049631321" target="_blank" class="checkout-btn" style="text-decoration:none;">
+      💬 Open WhatsApp Chat
+    </a>
+    <p style="color: var(--muted); margin-top:1.5rem; font-size:0.9rem;">
+      Min order Rs. 600 (Gamber & Cantt). Free home delivery.
+    </p>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

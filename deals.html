@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deals — Crispy Pizza Hub</title>
+  <meta name="description" content="Daily deals, family bundles and special offers.">
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.svg" alt="Crispy Pizza Hub logo">
+      <span class="brand-name text-gradient">Crispy Pizza Hub</span>
+    </a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="page-header animate-fade-up">
+  <p class="page-eyebrow">HOT &amp; CRISPY SAVINGS</p>
+  <h1 class="page-title text-gradient">Today's Deals</h1>
+  <p class="page-sub">Afternoon, midnight, and family bundles. Tap to add to your cart.</p>
+</section>
+
+<section class="deals-grid" id="deals-grid"></section>
+
+<section class="club-cta">
+  <h2>Free Home Delivery</h2>
+  <p>📞 0304-9631321 · 0307-1975852 · Min order Rs. 600 (Gamber & Cantt)</p>
+  <a href="menu.html" class="btn">Browse Menu</a>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner footer">
+    <div>
+      <div class="footer-brand"><img src="assets/logo.svg" alt="Logo"><span class="text-gradient">Crispy Pizza Hub</span></div>
+      <p>Big flavor, bigger deals.</p>
+    </div>
+    <div><h3>Branches</h3><ul><li>📍 G.T Road, Adda Gamber, Okara Cantt</li><li>📍 Madhali Road, Sahiwal</li></ul></div>
+    <div><h3>Open</h3><p>Daily 11 AM – Midnight</p></div>
+  </div>
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => renderDeals('deals-grid'));
+</script>
+</body>
+</html>

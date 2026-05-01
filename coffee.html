@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee World — Crispy Pizza Hub</title>
+  <meta name="description" content="Step into our coffee bar — hot espressos, cold frappuccinos, and aromatic teas.">
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-coffee">
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.svg" alt="Crispy Pizza Hub logo">
+      <span class="brand-name text-gradient">Crispy Pizza Hub</span>
+    </a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="coffee-hero" style="background-color:#1a1410;">
+  <div class="hero-glow" id="coffee-glow"></div>
+  <div class="hero-inner">
+    <div class="animate-fade-up">
+      <p class="hero-eyebrow" id="coffee-eyebrow">BREW №1</p>
+      <h1 class="hero-title font-script" id="coffee-title" style="font-family: var(--font-script); font-size: clamp(2.5rem, 7vw, 5rem);"></h1>
+      <p class="hero-tagline" id="coffee-tagline"></p>
+      <div class="hero-actions">
+        <a href="#coffee-menu" class="btn btn-primary">See the Coffee Menu</a>
+        <a href="#" onclick="event.preventDefault(); transitionTo('index.html','Back to the Pizza World 🍕')" class="btn btn-ghost">← Back to Pizza</a>
+      </div>
+    </div>
+    <div class="pizza-stage">
+      <div class="pizza-blur"></div>
+      <div class="steam"></div>
+      <div class="steam"></div>
+      <div class="steam"></div>
+      <div class="pizza-wrap animate-scale-pop" id="coffee-wrap">
+        <img id="coffee-img" class="pizza-img" src="assets/coffee/cappuccino.jpg" alt="Coffee" style="animation: float 6s ease-in-out infinite;">
+      </div>
+      <button class="arrow left"  id="coffee-prev" aria-label="Previous">‹</button>
+      <button class="arrow right" id="coffee-next" aria-label="Next">›</button>
+    </div>
+  </div>
+  <div class="dots" id="coffee-dots"></div>
+</section>
+
+<section id="coffee-menu">
+  <div class="menu-section-title"><h2>☕ Hot Coffees</h2><span class="line"></span></div>
+  <section class="menu-grid" id="grid-hot"></section>
+
+  <div class="menu-section-title"><h2>🧊 Cold Coffees</h2><span class="line"></span></div>
+  <section class="menu-grid" id="grid-cold"></section>
+
+  <div class="menu-section-title"><h2>🍵 Tea</h2><span class="line"></span></div>
+  <section class="menu-grid" id="grid-tea"></section>
+</section>
+
+<section style="text-align:center; padding: 3rem 1.5rem;">
+  <a href="#" onclick="event.preventDefault(); transitionTo('menu.html','Back to the Pizza Menu 🍕')" class="btn btn-ghost">← Back to Pizza Menu</a>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner footer">
+    <div>
+      <div class="footer-brand"><img src="assets/logo.svg" alt="Logo"><span class="text-gradient">Crispy Pizza Hub · Coffee Bar</span></div>
+      <p>Slow-roasted beans, fast service. Espresso pulled to order.</p>
+    </div>
+    <div>
+      <h3>Coffee Hours</h3>
+      <ul>
+        <li>☕ Daily 8 AM – Midnight</li>
+        <li>📞 0304-9631321</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Order on WhatsApp</h3>
+      <p>Add anything to your cart and check out — your order goes straight to our WhatsApp.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/coffee.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMenuSection('grid-hot', window.MENU.coffeeHot);
+    renderMenuSection('grid-cold', window.MENU.coffeeCold);
+    renderMenuSection('grid-tea', window.MENU.tea);
+  });
+</script>
+</body>
+</html>

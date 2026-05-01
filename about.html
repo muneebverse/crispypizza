@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Crispy Pizza Hub</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand"><img src="assets/logo.svg" alt="Logo"><span class="brand-name text-gradient">Crispy Pizza Hub</span></a>
+    <nav class="nav" id="main-nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="coffee.html">Coffee</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="page-header animate-fade-up">
+  <p class="page-eyebrow">OUR STORY</p>
+  <h1 class="page-title text-gradient">Crafted with Cheese</h1>
+</section>
+
+<section class="about-section">
+  <div class="about-pizza"><img src="assets/pizzas/special.jpg" alt="Signature pizza" onerror="this.style.opacity=0.3"></div>
+  <div class="about-text">
+    <p>Crispy Pizza Hub started as a small kitchen in Okara with one goal — bring wood-fired, hand-tossed pizza to every street.</p>
+    <p>Today we serve 20+ pizza flavors, juicy burgers, hand-rolled shawarmas, pasta, shakes — and a full coffee bar where every espresso is pulled to order.</p>
+    <p>Every dough is fermented for 24 hours. Every coffee bean is freshly ground. Every order is made fresh.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">© <span id="year"></span> Crispy Pizza Hub.</div>
+</footer>
+
+<script src="js/menu-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
