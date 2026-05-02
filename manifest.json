@@ -1,0 +1,50 @@
+{
+  "name": "Crispy Pizza Hub",
+  "short_name": "Crispy Pizza",
+  "description": "Wood-fired pizzas, burgers, coffee & more. Order online from Crispy Pizza Hub.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#c8102e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/assets/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "shopping"],
+  "shortcuts": [
+    {
+      "name": "View Menu",
+      "short_name": "Menu",
+      "description": "Browse our full menu",
+      "url": "/menu.html",
+      "icons": [{ "src": "/assets/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Deals",
+      "short_name": "Deals",
+      "description": "See today's deals",
+      "url": "/deals.html",
+      "icons": [{ "src": "/assets/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Coffee World",
+      "short_name": "Coffee",
+      "description": "Explore our coffee menu",
+      "url": "/coffee.html",
+      "icons": [{ "src": "/assets/logo.jpg", "sizes": "192x192" }]
+    }
+  ]
+}
