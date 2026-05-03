@@ -147,15 +147,50 @@ function mountCartDrawer() {
     if (btn.dataset.act === "rm") Cart.remove(id, variant);
   });
 
-  document.getElementById("cart-form").addEventListener("submit", (e) => {
+  document.getElementById("cart-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (Cart.items.length === 0) return;
-    const name = document.getElementById("f-name").value.trim();
-    const phone = document.getElementById("f-phone").value.trim();
+
+    const name    = document.getElementById("f-name").value.trim();
+    const phone   = document.getElementById("f-phone").value.trim();
     const address = document.getElementById("f-address").value.trim();
-    const notes = document.getElementById("f-notes").value.trim();
+    const notes   = document.getElementById("f-notes").value.trim();
     if (!name || !phone || !address) return;
 
+    // ── Disable button while saving ──────────────────────
+    const submitBtn = document.getElementById("checkout-btn");
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving order...";
+
+    // ── 1. Save to Firebase (POS dashboard gets it instantly) ──
+    try {
+      if (window._firebaseDb) {
+        await window._firebaseDb.collection("orders").add({
+          localId:   Date.now(),
+          customer:  name,
+          phone:     phone,
+          address:   address,
+          notes:     notes,
+          items:     Cart.items.map(i => ({
+            name:    i.name,
+            variant: i.variant || "",
+            price:   i.price,
+            qty:     i.qty,
+          })),
+          total:     Cart.total(),
+          type:      "delivery",
+          source:    "Website",
+          status:    "new",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (err) {
+      // Firebase failed — still let WhatsApp go through
+      console.warn("Firebase order save failed:", err.message);
+    }
+
+    // ── 2. Open WhatsApp as before (unchanged) ────────────
     const lines = [];
     lines.push("*🍕 New Crispy Pizza Hub Order*");
     lines.push("");
@@ -174,8 +209,12 @@ function mountCartDrawer() {
     if (notes) lines.push(`📝 Notes: ${notes}`);
 
     const text = encodeURIComponent(lines.join("\n"));
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+    const url  = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
     window.open(url, "_blank");
+
+    // ── 3. Restore button ─────────────────────────────────
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalText;
   });
 }
 
