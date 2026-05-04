@@ -153,12 +153,11 @@
 
 <script src="js/menu-data.js"></script>
 
-<!-- FIREBASE SDK (Paste this right above </body> in index.html) -->
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Initialize Firebase on the customer website
   const firebaseConfig = {
     apiKey: "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
     authDomain: "crispypizza-aa734.firebaseapp.com",
@@ -169,10 +168,14 @@
     measurementId: "G-VQJSKZW3EQ"
   };
   
+  // Initialize Firebase
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-  const db = firebase.firestore();
+  
+  // ✨ THIS IS THE FIX ✨
+  // We name it exactly what cart.js is looking for!
+  window._firebaseDb = firebase.firestore();
 </script>
 
 <script src="js/cart.js"></script>
