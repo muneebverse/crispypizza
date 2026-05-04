@@ -161,7 +161,8 @@ db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
   // Set the reset time to exactly 4:00 AM
   startOfDay.setHours(4, 0, 0, 0);
 
-  orders = snap.docs
+  // FIX: Changed "orders =" to "onlineOrders ="
+  onlineOrders = snap.docs
     .map(doc => ({ firebaseId: doc.id, ...doc.data(), time: doc.data().timestamp ? doc.data().timestamp.toDate() : new Date() }))
     // Keep all orders placed after the 4:00 AM shift start
     .filter(order => order.time >= startOfDay);
@@ -172,7 +173,7 @@ db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
 // ADVANCE ORDER STATUS
 async function advanceOrder(firebaseId) {
   const order = onlineOrders.find(o => o.firebaseId === firebaseId);
-  const flow = ['new', 'preparing', 'ready', 'done'];
+  const flow =['new', 'preparing', 'ready', 'done'];
   const newStatus = flow[flow.indexOf(order.status) + 1];
   
   if(newStatus) {
@@ -217,19 +218,22 @@ function renderDashboard() {
 
   // Kanban Columns Data
   const cols =['new', 'preparing', 'ready', 'done'];
+  // FIX: Created a specific array for the HTML IDs instead of relying on substring(0,4)
+  const colIds = ['new', 'prep', 'ready', 'done'];
   const labels =['▶ Accept & Start Prep', '✓ Mark as Ready', '🎉 Mark as Delivered', ''];
-  const btnClasses =['advance-btn', 'advance-btn', 'advance-btn done-btn', ''];
+  const btnClasses = ['advance-btn', 'advance-btn', 'advance-btn done-btn', ''];
   
   cols.forEach((status, i) => {
+    const colId = colIds[i]; // Fetch the exact HTML ID mapped to this status
     const colOrders = filteredOrders.filter(o => o.status === status);
-    document.getElementById(`cnt-${status.substring(0,4)}`).textContent = colOrders.length;
+    document.getElementById(`cnt-${colId}`).textContent = colOrders.length;
     
     if (colOrders.length === 0) {
-      document.getElementById(`col-${status.substring(0,4)}`).innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-dim); font-size: 13px;">No orders here</div>`;
+      document.getElementById(`col-${colId}`).innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-dim); font-size: 13px;">No orders here</div>`;
       return;
     }
 
-    document.getElementById(`col-${status.substring(0,4)}`).innerHTML = colOrders.map(o => `
+    document.getElementById(`col-${colId}`).innerHTML = colOrders.map(o => `
       <div class="order-card">
         <div class="order-card-top">
           <span class="order-num">#${o.localId || o.firebaseId.substring(0,4)}</span>
