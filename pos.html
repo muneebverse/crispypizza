@@ -164,9 +164,9 @@
         <div class="order-fields">
           <!-- BRANCH SELECTION FOR POS -->
           <select id="posBranch" class="order-input" style="font-weight: bold; border-color: var(--text-dim);">
-            <option value="Main Branch">Main Branch</option>
-            <option value="Branch 2">Branch 2</option>
-            <option value="Branch 3">Branch 3</option>
+            <option value="Main Branch">Gamber Branch</option>
+            <option value="Branch 2">Sahiwal Branch</option>
+            <option value="Branch 3">Noor Park Branch</option>
           </select>
           <input type="text" class="order-input" id="custName" placeholder="Customer name">
           <input type="tel" class="order-input" id="custPhone" placeholder="Phone Number (Required for delivery)">
@@ -460,8 +460,8 @@ async function placeOrder() {
     type: orderType, 
     source: orderSource,
     customer: document.getElementById('custName').value || 'Walk-in',
-    phone: document.getElementById('custPhone').value,       // SAVE PHONE TO DB
-    address: document.getElementById('tableNum').value,      // SAVE ADDRESS/TABLE TO DB
+    phone: document.getElementById('custPhone').value,       
+    address: document.getElementById('tableNum').value,      
     total: cart.reduce((s, i) => s + i.price * i.qty, 0),
     status: 'new', 
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -473,14 +473,29 @@ async function placeOrder() {
   document.getElementById('placeBtn').disabled = false;
 }
 
+// 🔥 UPDATE: FETCH ORDERS WITH 4:00 AM "BUSINESS DAY" RESET 🔥
 db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
-  orders = snap.docs.map(doc => ({ firebaseId: doc.id, ...doc.data(), time: doc.data().timestamp ? doc.data().timestamp.toDate() : new Date() }));
+  
+  // Calculate the start of the current shift
+  const startOfDay = new Date();
+  if (startOfDay.getHours() < 4) {
+    // If it is 1 AM, 2 AM, or 3 AM, we still count it as "Yesterday's" shift
+    startOfDay.setDate(startOfDay.getDate() - 1);
+  }
+  // Set the reset time to exactly 4:00 AM
+  startOfDay.setHours(4, 0, 0, 0);
+
+  orders = snap.docs
+    .map(doc => ({ firebaseId: doc.id, ...doc.data(), time: doc.data().timestamp ? doc.data().timestamp.toDate() : new Date() }))
+    // Keep all orders placed after the 4:00 AM shift start
+    .filter(order => order.time >= startOfDay);
+
   renderDashboard();
 });
 
 async function advanceOrder(firebaseId) {
   const order = orders.find(o => o.firebaseId === firebaseId);
-  const flow = ['new', 'preparing', 'ready', 'done'];
+  const flow =['new', 'preparing', 'ready', 'done'];
   const newStatus = flow[flow.indexOf(order.status) + 1];
   if(newStatus) await db.collection('orders').doc(firebaseId).update({ status: newStatus });
 }
