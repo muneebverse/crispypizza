@@ -490,16 +490,21 @@ db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
     // Keep all orders placed after the 4:00 AM shift start
     .filter(order => order.time >= startOfDay);
 
-  renderDashboard();
+  if (document.getElementById('dashboard-view').style.display === 'flex') {
+    renderDashboard();
+  }
 });
 
 async function advanceOrder(firebaseId) {
   const order = orders.find(o => o.firebaseId === firebaseId);
   const flow =['new', 'preparing', 'ready', 'done'];
   const newStatus = flow[flow.indexOf(order.status) + 1];
-  if(newStatus) await db.collection('orders').doc(firebaseId).update({ status: newStatus });
+  if(newStatus) {
+    await db.collection('orders').doc(firebaseId).update({ status: newStatus });
+  }
 }
 
+// 🔥 BUG FIX: Mapped columns properly instead of using substring(0,4) 🔥
 function renderDashboard() {
   const filterBranch = document.getElementById('dashBranchFilter').value;
   
@@ -511,13 +516,16 @@ function renderDashboard() {
     <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val" style="color:var(--yellow)">${filteredOrders.filter(o=>o.status!=='done').length}</div></div>
   `;
 
-  const cols =['new', 'preparing', 'ready', 'done'];
+  const cols = ['new', 'preparing', 'ready', 'done'];
+  const colIds =['new', 'prep', 'ready', 'done']; // HTML IDs for the columns
   const labels =['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
   
   cols.forEach((status, i) => {
+    const colId = colIds[i]; // Get proper HTML id mapping
     const colOrders = filteredOrders.filter(o => o.status === status);
-    document.getElementById(`cnt-${status.substring(0,4)}`).textContent = colOrders.length;
-    document.getElementById(`col-${status.substring(0,4)}`).innerHTML = colOrders.map(o => `
+    
+    document.getElementById(`cnt-${colId}`).textContent = colOrders.length;
+    document.getElementById(`col-${colId}`).innerHTML = colOrders.map(o => `
       <div class="order-card">
         <div class="order-card-top"><b>#${o.localId||o.firebaseId.substring(0,4)}</b> <span>${Math.floor((new Date()-o.time)/60000)}m ago</span></div>
         
