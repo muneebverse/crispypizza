@@ -114,13 +114,13 @@ function mountCartDrawer() {
       <div class="cart-total">Total <strong id="cart-total">${CURRENCY} 0</strong></div>
       <form class="cart-form" id="cart-form" autocomplete="on">
         
-        <!-- NEW: BRANCH SELECTOR -->
-        <select name="branch" id="f-branch" required style="width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit;">
-          <option value="" disabled selected>-- Choose Branch --</option>
-          <option value="Main Branch">Gamber Branch</option>
-          <option value="Branch 2">Sahiwal Branch</option>
-          <option value="Branch 3">Noor Park Branch</option>
-        </select>
+<!-- NEW: BRANCH SELECTOR FIXED FOR DARK MODE -->
+<select name="branch" id="f-branch" required style="width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border); background: #141414; color: #ffffff; font-family: inherit; color-scheme: dark;">
+  <option value="" disabled selected style="color: #888;">-- Choose Branch --</option>
+  <option value="Gamber Branch" style="background: #1E1E1E; color: #ffffff;">Gamber Branch</option>
+  <option value="Sahiwal Branch" style="background: #1E1E1E; color: #ffffff;">Sahiwal Branch</option>
+  <option value="Noor Park Branch" style="background: #1E1E1E; color: #ffffff;">Noor Park Branch</option>
+</select>
 
         <input name="name" id="f-name" placeholder="Your name" required maxlength="60">
         <input name="phone" id="f-phone" placeholder="Phone number" required pattern="[0-9+\\-\\s]{7,20}" maxlength="20">
