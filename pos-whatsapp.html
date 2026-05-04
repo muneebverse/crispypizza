@@ -149,13 +149,23 @@ let onlineOrders =[];
 function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-PK', { hour12: false }); }
 setInterval(updateClock, 1000); updateClock();
 
-// FETCH ORDERS - STRICTLY FILTER FOR "Website" SOURCE
+// 🔥 UPDATE: FETCH ORDERS WITH 4:00 AM "BUSINESS DAY" RESET 🔥
 db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
-  onlineOrders = snap.docs
+  
+  // Calculate the start of the current shift
+  const startOfDay = new Date();
+  if (startOfDay.getHours() < 4) {
+    // If it is 1 AM, 2 AM, or 3 AM, we still count it as "Yesterday's" shift
+    startOfDay.setDate(startOfDay.getDate() - 1);
+  }
+  // Set the reset time to exactly 4:00 AM
+  startOfDay.setHours(4, 0, 0, 0);
+
+  orders = snap.docs
     .map(doc => ({ firebaseId: doc.id, ...doc.data(), time: doc.data().timestamp ? doc.data().timestamp.toDate() : new Date() }))
-    // 🔥 THIS IS THE MAGIC LINE: Only keep orders where source is 'Website'
-    .filter(order => order.source === 'Website'); 
-    
+    // Keep all orders placed after the 4:00 AM shift start
+    .filter(order => order.time >= startOfDay);
+
   renderDashboard();
 });
 
