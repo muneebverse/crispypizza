@@ -7,45 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #E8161B;
-    --red-dark: #B01014;
-    --red-glow: rgba(232,22,27,0.25);
-    --black: #0A0A0A;
-    --surface: #141414;
-    --surface2: #1E1E1E;
-    --surface3: #282828;
-    --border: #2E2E2E;
-    --text: #F0F0F0;
-    --text-muted: #888;
-    --text-dim: #555;
-    --green: #22C55E;
-    --yellow: #EAB308;
-    --blue: #3B82F6;
-    --orange: #F97316;
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --red: #E8161B; --red-dark: #B01014; --red-glow: rgba(232,22,27,0.25);
+    --black: #0A0A0A; --surface: #141414; --surface2: #1E1E1E; --surface3: #282828;
+    --border: #2E2E2E; --text: #F0F0F0; --text-muted: #888; --text-dim: #555;
+    --green: #22C55E; --yellow: #EAB308; --blue: #3B82F6; --orange: #F97316;
+    --font-display: 'Bebas Neue', sans-serif; --font-body: 'DM Sans', sans-serif; --font-mono: 'JetBrains Mono', monospace;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--black); color: var(--text); font-family: var(--font-body); font-size: 14px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-  body {
-    background: var(--black);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 14px;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; height: 52px; flex-shrink: 0;
-  }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 52px; flex-shrink: 0; }
   .topbar-logo { font-family: var(--font-display); font-size: 24px; color: var(--red); letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
   .topbar-logo span { color: var(--text); }
   .tab-switch { display: flex; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; }
@@ -63,7 +34,6 @@
   .menu-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .search-bar { display: flex; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; gap: 8px; margin-bottom: 12px; }
   .search-bar input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 13px; flex: 1; }
-  .search-bar input::placeholder { color: var(--text-dim); }
   .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
   .cat-tabs::-webkit-scrollbar { display: none; }
   .cat-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
@@ -129,7 +99,8 @@
   .order-card-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
   .order-num { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--red); }
   .order-time { font-size: 10px; color: var(--text-muted); }
-  .order-cust { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .order-cust { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5;}
+  .cust-contact { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
   .order-items-preview { font-size: 11px; color: var(--text-muted); padding: 8px; background: var(--surface3); border-radius: 6px; margin-bottom: 8px; }
   .order-card-bottom { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .order-total { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--green); }
@@ -198,8 +169,8 @@
             <option value="Branch 3">Branch 3</option>
           </select>
           <input type="text" class="order-input" id="custName" placeholder="Customer name">
-          <input type="tel" class="order-input" id="custPhone" placeholder="Phone (optional)">
-          <input type="text" class="order-input" id="tableNum" placeholder="Table # (dine-in)">
+          <input type="tel" class="order-input" id="custPhone" placeholder="Phone Number (Required for delivery)">
+          <input type="text" class="order-input" id="tableNum" placeholder="Table # OR Delivery Address">
         </div>
       </div>
       <div id="cartItems"></div>
@@ -267,17 +238,162 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// FULL MENU ARRAY RESTORED
 const MENU =[
+  // PIZZAS - Regular
   { id: 1, name: "Achari Pizza", price: 650, cat: "Pizzas", emoji: "🍕" },
+  { id: 2, name: "Biggeri Suprema Pizza", price: 850, cat: "Pizzas", emoji: "🍕" },
+  { id: 3, name: "Creamy Pizza", price: 750, cat: "Pizzas", emoji: "🍕" },
+  { id: 4, name: "Fried Chicken Pizza", price: 750, cat: "Pizzas", emoji: "🍕" },
+
+  // PIZZAS - Highly Recommended
+  { id: 5, name: "Crown Crust (M)", price: 1400, cat: "Pizzas", emoji: "👑" },
+  { id: 6, name: "Crown Crust (L)", price: 1890, cat: "Pizzas", emoji: "👑" },
+  { id: 7, name: "Crunchy Pizza (M)", price: 1490, cat: "Pizzas", emoji: "🍕" },
+  { id: 8, name: "Crunchy Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🍕" },
+
+  // PIZZAS - Specialty
+  { id: 9, name: "Crispy Hub Special (S)", price: 700, cat: "Pizzas", emoji: "⭐" },
+  { id: 10, name: "Crispy Hub Special (M)", price: 1300, cat: "Pizzas", emoji: "⭐" },
+  { id: 11, name: "Crispy Hub Special (L)", price: 1700, cat: "Pizzas", emoji: "⭐" },
+  { id: 12, name: "Stuff Crust (M)", price: 1320, cat: "Pizzas", emoji: "🍕" },
+  { id: 13, name: "Stuff Crust (L)", price: 1420, cat: "Pizzas", emoji: "🍕" },
+  { id: 14, name: "Behari Rabab (M)", price: 1400, cat: "Pizzas", emoji: "🍕" },
+  { id: 15, name: "Behari Rabab (L)", price: 1840, cat: "Pizzas", emoji: "🍕" },
+  { id: 16, name: "Malai Boti Pizza (M)", price: 1280, cat: "Pizzas", emoji: "🍕" },
+  { id: 17, name: "Malai Boti Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🍕" },
+  { id: 18, name: "Square Pizza (S)", price: 800, cat: "Pizzas", emoji: "⬜" },
+  { id: 19, name: "Square Pizza (L)", price: 1800, cat: "Pizzas", emoji: "⬜" },
+  { id: 20, name: "Extreme Pizza (M)", price: 1320, cat: "Pizzas", emoji: "🔥" },
+  { id: 21, name: "Extreme Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🔥" },
+  { id: 22, name: "Fire Rose Pizza (M)", price: 1450, cat: "Pizzas", emoji: "🌹" },
+  { id: 23, name: "Fire Rose Pizza (L)", price: 1990, cat: "Pizzas", emoji: "🌹" },
+  { id: 24, name: "Farm House Delights Pizza (M)", price: 1450, cat: "Pizzas", emoji: "🏡" },
+  { id: 25, name: "Farm House Delights Pizza (L)", price: 1990, cat: "Pizzas", emoji: "🏡" },
+
+  // PIZZAS - Traditional
+  { id: 26, name: "Chicken Tikka Pizza", price: 800, cat: "Pizzas", emoji: "🍕" },
+  { id: 27, name: "Hot & Spicy Pizza", price: 800, cat: "Pizzas", emoji: "🌶️" },
+  { id: 28, name: "Chicken Fajita Pizza", price: 850, cat: "Pizzas", emoji: "🍕" },
+  { id: 29, name: "Cheese Lover Pizza", price: 750, cat: "Pizzas", emoji: "🧀" },
+  { id: 30, name: "Hot Sicilian Pizza", price: 800, cat: "Pizzas", emoji: "🍕" },
+  { id: 31, name: "Veg Max Pizza", price: 600, cat: "Pizzas", emoji: "🥬" },
+
+  // SHAWARMA & ROLLS
   { id: 32, name: "Zinger Shawarma", price: 330, cat: "Shawarma", emoji: "🌯" },
+  { id: 33, name: "Zinger Cheese Shawarma", price: 370, cat: "Shawarma", emoji: "🌯" },
+  { id: 34, name: "Zinger Paratha Shawarma", price: 380, cat: "Shawarma", emoji: "🌯" },
+  { id: 35, name: "Zinger Cheese Paratha Roll", price: 370, cat: "Shawarma", emoji: "🌯" },
+  { id: 36, name: "Seekh Zinger Paratha Roll", price: 320, cat: "Shawarma", emoji: "🌯" },
+
+  // BURGERS
   { id: 37, name: "Zinger Burger", price: 380, cat: "Burgers", emoji: "🍔" },
+  { id: 38, name: "Chicken Burger", price: 320, cat: "Burgers", emoji: "🍔" },
+  { id: 39, name: "Spice Burger", price: 350, cat: "Burgers", emoji: "🍔" },
+  { id: 40, name: "Chicken Cheese Burger", price: 360, cat: "Burgers", emoji: "🍔" },
+  { id: 41, name: "Zinger Cheese Burger", price: 420, cat: "Burgers", emoji: "🍔" },
+  { id: 42, name: "Crispy Hub Special Burger", price: 650, cat: "Burgers", emoji: "🍔" },
+
+  // PASTA
+  { id: 43, name: "Crispy Hub Spid Pasta", price: 700, cat: "Pasta", emoji: "🍝" },
+  { id: 44, name: "Crunchy Pasta", price: 800, cat: "Pasta", emoji: "🍝" },
+
+  // APPETIZERS & SIDES
+  { id: 45, name: "Hot Wings (5 Pc)", price: 350, cat: "Appetizers", emoji: "🍗" },
+  { id: 46, name: "Hot Wings (8 Pc)", price: 550, cat: "Appetizers", emoji: "🍗" },
+  { id: 47, name: "Nuggets", price: 290, cat: "Appetizers", emoji: "🍖" },
+  { id: 48, name: "Hot Shot", price: 540, cat: "Appetizers", emoji: "🔥" },
   { id: 49, name: "Loaded Fries", price: 860, cat: "Appetizers", emoji: "🍟" },
+  { id: 50, name: "French Fries (Regular)", price: 250, cat: "Appetizers", emoji: "🍟" },
+  { id: 51, name: "French Fries (Large)", price: 380, cat: "Appetizers", emoji: "🍟" },
+
+  // COMBOS
+  { id: 52, name: "2 Small Pizza + 1 Drink", price: 1850, cat: "Deals", emoji: "🎁" },
+  { id: 53, name: "1 Large Pizza + 1 Drink", price: 2410, cat: "Deals", emoji: "🎁" },
+  { id: 54, name: "2 Large Pizza + 2 Drink", price: 3600, cat: "Deals", emoji: "🎁" },
+  { id: 55, name: "1 Large Pizza + 1 Burger", price: 2080, cat: "Deals", emoji: "🎁" },
+  { id: 56, name: "2 Large Pizza + 2 Burger", price: 3590, cat: "Deals", emoji: "🎁" },
+  { id: 57, name: "1 Small Pizza + 1 Large Drink", price: 1460, cat: "Deals", emoji: "🎁" },
+  { id: 58, name: "2 Hot Wings + 1 Med Pizza + Drink", price: 1740, cat: "Deals", emoji: "🎁" },
+  { id: 59, name: "1 L Pizza + 1 M Pizza + Drink", price: 2630, cat: "Deals", emoji: "🎁" },
+  { id: 60, name: "1 Hot Wings + M Pizza + Drink + Fries", price: 1440, cat: "Deals", emoji: "🎁" },
+
+  // COLD COFFEES
+  { id: 61, name: "Hazelnut Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
+  { id: 62, name: "Caramel Frappuccino", price: 550, cat: "Coffee", emoji: "☕" },
+  { id: 63, name: "Irish Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
+  { id: 64, name: "French Vanilla Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
   { id: 65, name: "Cold Coffee", price: 450, cat: "Coffee", emoji: "☕" },
-  { id: 85, name: "Fresh Lime", price: 150, cat: "Drinks", emoji: "🍋" }
-]; // (Truncated for brevity in example, you can paste your full menu array here!)
+  { id: 66, name: "Kit Kat special", price: 650, cat: "Coffee", emoji: "☕" },
+  { id: 67, name: "Butter Scotch Frappuccino", price: 600, cat: "Coffee", emoji: "☕" },
+
+  // HOT COFFEES
+  { id: 68, name: "Cappuccino", price: 450, cat: "Coffee", emoji: "☕" },
+  { id: 69, name: "Café Lattee", price: 470, cat: "Coffee", emoji: "☕" },
+  { id: 70, name: "Espresso Single Shots", price: 300, cat: "Coffee", emoji: "☕" },
+  { id: 71, name: "Espresso Double Shot", price: 450, cat: "Coffee", emoji: "☕" },
+  { id: 72, name: "Caramel Coffee", price: 550, cat: "Coffee", emoji: "☕" },
+  { id: 73, name: "Americano", price: 420, cat: "Coffee", emoji: "☕" },
+  { id: 74, name: "CPH Special Coffee", price: 550, cat: "Coffee", emoji: "☕" },
+  { id: 75, name: "Nescafe Coffee", price: 250, cat: "Coffee", emoji: "☕" },
+
+  // TEA
+  { id: 76, name: "Karak Chai", price: 150, cat: "Coffee", emoji: "🍵" },
+  { id: 77, name: "Cardamom", price: 200, cat: "Coffee", emoji: "🍵" },
+  { id: 78, name: "Chocolate Tea", price: 230, cat: "Coffee", emoji: "🍵" },
+  { id: 79, name: "Caramel Tea", price: 200, cat: "Coffee", emoji: "🍵" },
+
+  // SMOOTHIES
+  { id: 80, name: "Raspberry", price: 350, cat: "Drinks", emoji: "🥤" },
+  { id: 81, name: "Red Orange", price: 350, cat: "Drinks", emoji: "🥤" },
+  { id: 82, name: "Mango", price: 350, cat: "Drinks", emoji: "🥤" },
+  { id: 83, name: "Green Apple", price: 350, cat: "Drinks", emoji: "🥤" },
+  { id: 84, name: "Blue Curacao", price: 350, cat: "Drinks", emoji: "🥤" },
+
+  // COCKTAILS
+  { id: 85, name: "Fresh Lime", price: 150, cat: "Drinks", emoji: "🍋" },
+  { id: 86, name: "Lemonade", price: 200, cat: "Drinks", emoji: "🍋" },
+  { id: 87, name: "Mint Margarita", price: 250, cat: "Drinks", emoji: "🍹" },
+  { id: 88, name: "Electric Lemonade", price: 320, cat: "Drinks", emoji: "⚡" },
+  { id: 89, name: "Pink Lady", price: 400, cat: "Drinks", emoji: "💗" },
+  { id: 90, name: "Blue Lagoon", price: 450, cat: "Drinks", emoji: "🌊" },
+  { id: 91, name: "Pina Colada", price: 600, cat: "Drinks", emoji: "🥥" },
+  { id: 92, name: "Strawberry Colada", price: 520, cat: "Drinks", emoji: "🍓" },
+
+  // FRESH SHAKES
+  { id: 93, name: "Mango Shake", price: 250, cat: "Drinks", emoji: "🥤" },
+  { id: 94, name: "Banana Shake", price: 200, cat: "Drinks", emoji: "🥤" },
+  { id: 95, name: "Apple Shake", price: 200, cat: "Drinks", emoji: "🥤" },
+  { id: 96, name: "Khajoor Badam Shake", price: 400, cat: "Drinks", emoji: "🥤" },
+  { id: 97, name: "Peach Shake", price: 200, cat: "Drinks", emoji: "🥤" },
+
+  // ICE CREAM SHAKES
+  { id: 98, name: "Kulfa Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
+  { id: 99, name: "Mango Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
+  { id: 100, name: "Vanilla Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
+  { id: 101, name: "Chocolate Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
+  { id: 102, name: "Oreo Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
+  { id: 103, name: "Cold Coffee", price: 520, cat: "Ice Cream", emoji: "☕" },
+
+  // ICE CREAM
+  { id: 104, name: "Mango Pista (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
+  { id: 105, name: "Kulfa (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
+  { id: 106, name: "Chocolate (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
+  { id: 107, name: "Caramel Crunch (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
+  
+  { id: 108, name: "Mango Pista (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
+  { id: 109, name: "Kulfa (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
+  { id: 110, name: "Chocolate (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
+  { id: 111, name: "Caramel Crunch (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
+  
+  { id: 112, name: "Mango Pista (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
+  { id: 113, name: "Kulfa (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
+  { id: 114, name: "Chocolate (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
+  { id: 115, name: "Caramel Crunch (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
+];
 
 const CATS =["All", ...new Set(MENU.map(i => i.cat))];
-let activeCategory = "All", searchQuery = "", cart = [];
+let activeCategory = "All", searchQuery = "", cart =[];
 let orderType = "dine-in", orderSource = "Counter";
 let orders =[], orderCounter = 1001;
 
@@ -321,7 +437,13 @@ function renderCart() {
   document.getElementById('grandTotal').textContent = `Rs. ${sub}`;
   document.getElementById('placeBtn').disabled = cart.length === 0;
 }
-function clearCart() { cart =[]; renderCart(); }
+function clearCart() { 
+  cart =[]; 
+  document.getElementById('custName').value = '';
+  document.getElementById('custPhone').value = '';
+  document.getElementById('tableNum').value = '';
+  renderCart(); 
+}
 
 function setType(type, el) { orderType = type; document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
 function setSource(src, el) { orderSource = src; document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
@@ -330,16 +452,19 @@ async function placeOrder() {
   if (cart.length === 0) return;
   document.getElementById('placeBtn').disabled = true;
 
-  const branch = document.getElementById('posBranch').value; // Read Branch
+  const branch = document.getElementById('posBranch').value;
   const order = {
     localId: orderCounter++,
     branch: branch,
     items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
-    type: orderType, source: orderSource,
+    type: orderType, 
+    source: orderSource,
     customer: document.getElementById('custName').value || 'Walk-in',
-    table: document.getElementById('tableNum').value,
+    phone: document.getElementById('custPhone').value,       // SAVE PHONE TO DB
+    address: document.getElementById('tableNum').value,      // SAVE ADDRESS/TABLE TO DB
     total: cart.reduce((s, i) => s + i.price * i.qty, 0),
-    status: 'new', timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    status: 'new', 
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   };
 
   await db.collection('orders').add(order);
@@ -363,7 +488,6 @@ async function advanceOrder(firebaseId) {
 function renderDashboard() {
   const filterBranch = document.getElementById('dashBranchFilter').value;
   
-  // Filter orders based on the dropdown
   const filteredOrders = filterBranch === "All" ? orders : orders.filter(o => (o.branch || "Main Branch") === filterBranch);
 
   document.getElementById('dashStats').innerHTML = `
@@ -373,7 +497,7 @@ function renderDashboard() {
   `;
 
   const cols =['new', 'preparing', 'ready', 'done'];
-  const labels = ['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
+  const labels =['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
   
   cols.forEach((status, i) => {
     const colOrders = filteredOrders.filter(o => o.status === status);
@@ -381,7 +505,15 @@ function renderDashboard() {
     document.getElementById(`col-${status.substring(0,4)}`).innerHTML = colOrders.map(o => `
       <div class="order-card">
         <div class="order-card-top"><b>#${o.localId||o.firebaseId.substring(0,4)}</b> <span>${Math.floor((new Date()-o.time)/60000)}m ago</span></div>
-        <div class="order-cust">${o.customer}</div>
+        
+        <!-- DISPLAY CUSTOMER NAME, PHONE, AND ADDRESS/TABLE -->
+        <div class="order-cust">
+          ${o.customer}
+          ${o.phone ? `<div class="cust-contact">📞 ${o.phone}</div>` : ''}
+          ${o.address ? `<div class="cust-contact">📍 ${o.address}</div>` : ''}
+          ${o.table && !o.address ? `<div class="cust-contact">🪑 T-${o.table}</div>` : ''}
+        </div>
+        
         <div class="order-items-preview">${o.items.map(i=>`${i.qty}x ${i.name}`).join(', ')}</div>
         <div class="order-card-bottom">
           <span style="color:var(--green); font-weight:bold;">Rs. ${o.total}</span>
