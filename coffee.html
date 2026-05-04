@@ -104,16 +104,30 @@
 </footer>
 
 <script src="js/menu-data.js"></script>
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
-  authDomain: "crispypizza-aa734.firebaseapp.com",
-  projectId: "crispypizza-aa734",
-  storageBucket: "crispypizza-aa734.firebasestorage.app",
-  messagingSenderId: "359399692159",
-  appId: "1:359399692159:web:72fb1804ffa198b229ac4a",
-  measurementId: "G-VQJSKZW3EQ"
-};
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
+    authDomain: "crispypizza-aa734.firebaseapp.com",
+    projectId: "crispypizza-aa734",
+    storageBucket: "crispypizza-aa734.firebasestorage.app",
+    messagingSenderId: "359399692159",
+    appId: "1:359399692159:web:72fb1804ffa198b229ac4a",
+    measurementId: "G-VQJSKZW3EQ"
+  };
+  
+  // Initialize Firebase
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  
+  // ✨ THIS IS THE FIX ✨
+  // We name it exactly what cart.js is looking for!
+  window._firebaseDb = firebase.firestore();
+</script>
 <script src="js/cart.js"></script>
 <script src="js/main.js"></script>
 <script src="js/coffee.js"></script>
