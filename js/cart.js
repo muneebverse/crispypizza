@@ -117,9 +117,9 @@ function mountCartDrawer() {
         <!-- NEW: BRANCH SELECTOR -->
         <select name="branch" id="f-branch" required style="width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit;">
           <option value="" disabled selected>-- Choose Branch --</option>
-          <option value="Main Branch">Main Branch</option>
-          <option value="Branch 2">Branch 2</option>
-          <option value="Branch 3">Branch 3</option>
+          <option value="Main Branch">MGamber Branch</option>
+          <option value="Branch 2">Sahiwal Branch</option>
+          <option value="Branch 3">Noor Park Branch</option>
         </select>
 
         <input name="name" id="f-name" placeholder="Your name" required maxlength="60">
