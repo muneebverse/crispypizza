@@ -1,15 +1,15 @@
 /* =========================================================
-   Crispy Pizza Hub — Cart + WhatsApp checkout
+   Crispy Pizza Hub — Cart + WhatsApp checkout (Multi-Branch)
    ========================================================= */
 const WHATSAPP_NUMBER = "923049631321"; // 0304-9631321 in international format
 const CURRENCY = "Rs.";
 const STORAGE_KEY = "cph_cart_v1";
 
 const Cart = {
-  items: [], // { id, name, variant, price, qty }
+  items:[], // { id, name, variant, price, qty }
   load() {
     try { this.items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { this.items = []; }
+    catch { this.items =[]; }
   },
   save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items)); },
   add(item) {
@@ -35,8 +35,7 @@ const Cart = {
   bump() {
     const btn = document.getElementById("cart-btn");
     if (!btn) return;
-    btn.animate(
-      [{ transform: "scale(1)" }, { transform: "scale(1.18)" }, { transform: "scale(1)" }],
+    btn.animate([{ transform: "scale(1)" }, { transform: "scale(1.18)" }, { transform: "scale(1)" }],
       { duration: 380, easing: "cubic-bezier(.34,1.56,.64,1)" }
     );
   },
@@ -114,6 +113,15 @@ function mountCartDrawer() {
     <div class="cart-foot">
       <div class="cart-total">Total <strong id="cart-total">${CURRENCY} 0</strong></div>
       <form class="cart-form" id="cart-form" autocomplete="on">
+        
+        <!-- NEW: BRANCH SELECTOR -->
+        <select name="branch" id="f-branch" required style="width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit;">
+          <option value="" disabled selected>-- Choose Branch --</option>
+          <option value="Main Branch">Main Branch</option>
+          <option value="Branch 2">Branch 2</option>
+          <option value="Branch 3">Branch 3</option>
+        </select>
+
         <input name="name" id="f-name" placeholder="Your name" required maxlength="60">
         <input name="phone" id="f-phone" placeholder="Phone number" required pattern="[0-9+\\-\\s]{7,20}" maxlength="20">
         <textarea name="address" id="f-address" placeholder="Delivery address" required maxlength="240"></textarea>
@@ -123,9 +131,6 @@ function mountCartDrawer() {
           Send Order on WhatsApp
         </button>
       </form>
-      <p style="font-size:0.7rem; color: var(--muted); text-align:center; margin-top:0.5rem;">
-        We'll open WhatsApp with your order pre-filled.
-      </p>
     </div>
   `;
 
@@ -134,7 +139,6 @@ function mountCartDrawer() {
 
   document.getElementById("cart-close").addEventListener("click", () => Cart.close());
 
-  // qty / remove delegate
   document.getElementById("cart-items").addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-act]");
     if (!btn) return;
@@ -151,23 +155,23 @@ function mountCartDrawer() {
     e.preventDefault();
     if (Cart.items.length === 0) return;
 
+    const branch  = document.getElementById("f-branch").value;
     const name    = document.getElementById("f-name").value.trim();
     const phone   = document.getElementById("f-phone").value.trim();
     const address = document.getElementById("f-address").value.trim();
     const notes   = document.getElementById("f-notes").value.trim();
-    if (!name || !phone || !address) return;
+    if (!branch || !name || !phone || !address) return;
 
-    // ── Disable button while saving ──────────────────────
     const submitBtn = document.getElementById("checkout-btn");
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.textContent = "Saving order...";
 
-    // ── 1. Save to Firebase (POS dashboard gets it instantly) ──
     try {
       if (window._firebaseDb) {
         await window._firebaseDb.collection("orders").add({
           localId:   Date.now(),
+          branch:    branch, // Saves selected branch to Firebase
           customer:  name,
           phone:     phone,
           address:   address,
@@ -186,13 +190,12 @@ function mountCartDrawer() {
         });
       }
     } catch (err) {
-      // Firebase failed — still let WhatsApp go through
       console.warn("Firebase order save failed:", err.message);
     }
 
-    // ── 2. Open WhatsApp as before (unchanged) ────────────
-    const lines = [];
+    const lines =[];
     lines.push("*🍕 New Crispy Pizza Hub Order*");
+    lines.push(`🏪 *Branch:* ${branch}`);
     lines.push("");
     lines.push("*Items:*");
     Cart.items.forEach((i, idx) => {
@@ -212,13 +215,11 @@ function mountCartDrawer() {
     const url  = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
     window.open(url, "_blank");
 
-    // ── 3. Restore button ─────────────────────────────────
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalText;
   });
 }
 
-/* ===== Render menu sections ===== */
 function renderMenuSection(targetId, section) {
   const el = document.getElementById(targetId);
   if (!el || !section) return;
@@ -253,7 +254,6 @@ function renderMenuSection(targetId, section) {
     `;
   }).join("");
 
-  // wire up
   el.querySelectorAll(".menu-card").forEach(card => {
     const id = card.dataset.id;
     const item = section.items.find(i => i.id === id);
@@ -299,11 +299,9 @@ function renderDeals(targetId) {
   });
 }
 
-/* ===== Boot ===== */
 document.addEventListener("DOMContentLoaded", () => {
   Cart.load();
   mountCartDrawer();
   Cart.render();
-
   document.getElementById("cart-btn")?.addEventListener("click", () => Cart.open());
 });
