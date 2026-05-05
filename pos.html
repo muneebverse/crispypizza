@@ -3,33 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crispy Pizza Hub — POS & Order Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>Crispy Pizza Hub — POS &amp; Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --red: #E8161B; --red-dark: #B01014; --red-glow: rgba(232,22,27,0.25);
     --black: #0A0A0A; --surface: #141414; --surface2: #1E1E1E; --surface3: #282828;
     --border: #2E2E2E; --text: #F0F0F0; --text-muted: #888; --text-dim: #555;
     --green: #22C55E; --yellow: #EAB308; --blue: #3B82F6; --orange: #F97316;
-    --font-display: 'Bebas Neue', sans-serif; --font-body: 'DM Sans', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--black); color: var(--text); font-family: var(--font-body); font-size: 14px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
+  /* ── PIN SCREEN ── */
+  #pin-screen { position: fixed; inset: 0; background: var(--black); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #pin-screen.hidden { display: none; }
+  .pin-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(232,22,27,0.1) 0%, transparent 70%); pointer-events: none; }
+  .pin-logo { font-family: var(--font-display); font-size: 48px; color: var(--red); letter-spacing: 4px; position: relative; }
+  .pin-logo span { color: var(--text); }
+  .pin-tagline { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 40px; position: relative; }
+  .pin-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 300px; text-align: center; position: relative; }
+  .pin-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
+  .pin-hint { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
+  .pin-display { background: var(--black); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--font-mono); font-size: 26px; letter-spacing: 12px; color: var(--red); margin-bottom: 16px; height: 58px; display: flex; align-items: center; justify-content: center; }
+  .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .pin-btn { padding: 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 20px; font-family: var(--font-mono); cursor: pointer; transition: all 0.1s; }
+  .pin-btn:hover { background: var(--surface3); }
+  .pin-btn:active { background: var(--red); border-color: var(--red); color: #fff; transform: scale(0.95); }
+  .pin-del { color: var(--text-muted); font-size: 17px; }
+  .pin-ok { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
+  .pin-ok:hover { background: var(--red-dark); }
+  .pin-error { color: var(--red); font-size: 12px; min-height: 18px; margin-top: 4px; animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* ── TOPBAR ── */
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 52px; flex-shrink: 0; }
   .topbar-logo { font-family: var(--font-display); font-size: 24px; color: var(--red); letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
   .topbar-logo span { color: var(--text); }
+  .admin-badge { font-size: 10px; background: rgba(232,22,27,0.15); color: var(--red); border: 1px solid rgba(232,22,27,0.3); border-radius: 4px; padding: 3px 8px; letter-spacing: 1px; font-weight: 700; }
+  .manager-badge { font-size: 10px; background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); border-radius: 4px; padding: 3px 8px; letter-spacing: 1px; font-weight: 700; }
   .tab-switch { display: flex; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; }
   .tab-btn { padding: 6px 20px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
-  .tab-btn.active { background: var(--red); color: white; }
-  .topbar-right { display: flex; align-items: center; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+  .tab-btn.active { background: var(--red); color: #fff; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 5px; box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
   .clock { color: var(--text); }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 5px; box-shadow: 0 0 6px var(--green); }
+  .role-label { font-size: 11px; color: var(--text-muted); font-family: var(--font-body); }
+  .lock-btn { padding: 5px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); font-size: 11px; font-family: var(--font-body); cursor: pointer; font-weight: 600; }
+  .lock-btn:hover { border-color: var(--red); color: var(--red); }
 
   .main { display: flex; flex: 1; overflow: hidden; }
 
-  /* POS VIEW */
+  /* ════════════════════════════════
+     POS VIEW
+  ════════════════════════════════ */
   #pos-view { display: flex; width: 100%; }
+
+  /* Menu panel */
   .menu-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); overflow: hidden; }
   .menu-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .search-bar { display: flex; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; gap: 8px; margin-bottom: 12px; }
@@ -37,149 +71,208 @@
   .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
   .cat-tabs::-webkit-scrollbar { display: none; }
   .cat-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-  .cat-tab.active { background: var(--red); border-color: var(--red); color: white; }
-  
+  .cat-tab.active { background: var(--red); border-color: var(--red); color: #fff; }
   .menu-grid { flex: 1; overflow-y: auto; padding: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; align-content: start; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-  .menu-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+  .menu-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; }
   .menu-item:hover { border-color: var(--red); background: var(--surface3); }
-  .item-emoji { font-size: 28px; margin-bottom: 8px; }
+  .menu-item:active { transform: scale(0.97); }
+  .item-emoji { font-size: 28px; margin-bottom: 8px; line-height: 1; }
   .item-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
   .item-price { font-family: var(--font-mono); font-size: 12px; color: var(--red); font-weight: 600; }
 
-  /* ORDER PANEL */
+  /* Order panel */
   .order-panel { width: 340px; display: flex; flex-direction: column; background: var(--surface); flex-shrink: 0; }
   .order-header { padding: 14px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .order-title { font-family: var(--font-display); font-size: 20px; color: var(--text); margin-bottom: 10px; }
+  .order-title { font-family: var(--font-display); font-size: 20px; color: var(--text); margin-bottom: 10px; letter-spacing: 1px; }
   .order-type-row { display: flex; gap: 6px; }
-  .order-type-btn { flex: 1; padding: 7px 4px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; }
-  .order-type-btn.active { background: var(--red); border-color: var(--red); color: white; }
-  
+  .order-type-btn { flex: 1; padding: 7px 4px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
+  .order-type-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
   .order-source { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-  .order-source-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .order-source-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
   .source-btns { display: flex; gap: 6px; }
-  .source-btn { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; }
-  .source-btn.active { background: var(--blue); border-color: var(--blue); color: white; }
-
+  .source-btn { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
+  .source-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
   .order-fields { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-  .order-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: var(--font-body); font-size: 12px; color: var(--text); }
-  
+  .order-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: var(--font-body); font-size: 12px; color: var(--text); outline: none; width: 100%; }
+  .order-input:focus { border-color: var(--text-dim); }
   #cartItems { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; }
+  .cart-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: var(--text-dim); font-size: 13px; height: 100%; opacity: 0.6; }
   .cart-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; gap: 10px; align-items: flex-start; }
   .cart-item-info { flex: 1; min-width: 0; }
   .cart-item-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
   .cart-item-price { font-family: var(--font-mono); font-size: 11px; color: var(--red); }
-  .qty-control { display: flex; gap: 4px; align-items: center; }
-  .qty-btn { width: 22px; height: 22px; border: 1px solid var(--border); background: var(--surface3); color: var(--text); border-radius: 4px; cursor: pointer; }
+  .qty-control { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
+  .qty-btn { width: 24px; height: 24px; border: 1px solid var(--border); background: var(--surface3); color: var(--text); border-radius: 4px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
   .qty-btn:hover { background: var(--red); border-color: var(--red); }
-  
-  .order-footer { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+  .order-footer { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
   .totals-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-  .totals-row.grand { font-size: 14px; font-weight: 600; color: var(--red); border-top: 1px solid var(--border); padding-top: 8px; }
+  .totals-row.grand { font-size: 15px; font-weight: 600; color: var(--red); border-top: 1px solid var(--border); padding-top: 8px; }
   .order-actions { display: flex; gap: 6px; }
-  .clear-btn { flex: 1; padding: 10px; background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }
-  .place-btn { flex: 2; padding: 10px; background: var(--red); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  .clear-btn { flex: 1; padding: 10px; background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-family: var(--font-body); font-size: 13px; }
+  .clear-btn:hover { border-color: var(--text-dim); }
+  .place-btn { flex: 2; padding: 10px; background: var(--red); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: var(--font-body); font-size: 13px; transition: background 0.12s; }
+  .place-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .place-btn:not(:disabled):hover { background: var(--red-dark); }
 
-  /* DASHBOARD VIEW */
+  /* ════════════════════════════════
+     DASHBOARD VIEW
+  ════════════════════════════════ */
   #dashboard-view { display: none; flex-direction: column; width: 100%; overflow: hidden; }
-  .dash-controls { padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
-  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
-  .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
-  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-  .stat-val { font-family: var(--font-mono); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-  .stat-sub { font-size: 10px; color: var(--text-dim); }
+  .dash-controls { padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .dash-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .stat-val { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+  .stat-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .kanban-view { display: flex; gap: 10px; padding: 12px 16px; flex: 1; overflow-x: auto; background: var(--black); overflow-y: hidden; }
+  .kanban-col { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; min-width: 280px; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .col-header { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .col-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+  .col-count { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--text); margin-top: 3px; }
+  .col-bar { width: 4px; height: 30px; border-radius: 2px; flex-shrink: 0; }
+  .col-content { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .col-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; padding: 28px; color: var(--text-dim); font-size: 12px; }
 
-  .kanban-view { display: flex; gap: 12px; padding: 14px 16px; flex: 1; overflow-x: auto; background: var(--black); }
-  .kanban-col { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; min-width: 320px; display: flex; flex-direction: column; overflow: hidden; }
-  .col-header { padding: 12px; border-bottom: 1px solid var(--border); background: var(--surface2); }
-  .col-title { font-size: 12px; font-weight: 600; color: var(--text); text-transform: uppercase; }
-  .col-count { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: var(--red); margin-top: 4px; }
-  .col-content { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-  
-  .order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-  .order-card-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
-  .order-num { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--red); }
-  .order-time { font-size: 10px; color: var(--text-muted); }
-  .order-cust { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5;}
-  .cust-contact { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
-  .order-items-preview { font-size: 11px; color: var(--text-muted); padding: 8px; background: var(--surface3); border-radius: 6px; margin-bottom: 8px; }
-  .order-card-bottom { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .order-total { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--green); }
+  /* Order cards */
+  .order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; animation: fadeUp .2s ease; }
+  .order-card.urgent { border-color: rgba(232,22,27,0.5); box-shadow: 0 0 10px rgba(232,22,27,0.1); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes bellFlash { 0%,100%{border-color:var(--border)} 50%{border-color:var(--red);box-shadow:0 0 20px rgba(232,22,27,.4)} }
+  .order-card.bell { animation: bellFlash .75s ease; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--surface3); border-bottom: 1px solid var(--border); }
+  .card-id { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--red); }
+  .card-age { font-size: 10px; color: var(--text-muted); }
+  .card-age.hot { color: var(--red); font-weight: 700; }
+  .card-body { padding: 10px; }
+  .card-table { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .card-cust { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.6; }
+  .card-items { font-size: 11px; color: var(--text-muted); background: var(--surface3); border-radius: 6px; padding: 7px 9px; margin-bottom: 8px; line-height: 1.8; }
+  .card-note { font-size: 11px; color: var(--yellow); background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); border-radius: 5px; padding: 5px 8px; margin-bottom: 8px; }
+  .card-bottom { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+  .card-total { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--green); }
   .badges { display: flex; gap: 4px; flex-wrap: wrap; }
-  .badge { font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
-  .badge-branch { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
-  .badge-source-website { background: var(--green); color: white; }
-  .badge-source-counter { background: var(--blue); color: white; }
-  
-  .advance-btn { width: 100%; padding: 8px; background: var(--red); color: white; border: none; font-size: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-  .advance-btn:hover { background: var(--red-dark); }
-  
-  /* TOAST */
-  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface2); color: var(--text); padding: 12px 20px; border-radius: 8px; border: 1px solid var(--border); transition: transform 0.3s; z-index: 1000; }
+  .badge { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+  .b-branch   { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
+  .b-dine     { background: rgba(234,179,8,.15); color: var(--yellow); border: 1px solid rgba(234,179,8,.3); }
+  .b-takeaway { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.3); }
+  .b-delivery { background: rgba(59,130,246,.15); color: var(--blue); border: 1px solid rgba(59,130,246,.3); }
+  .b-website  { background: var(--green); color: #fff; }
+  .b-counter  { background: var(--blue); color: #fff; }
+  .b-waiter   { background: var(--orange); color: #fff; }
+  .card-actions { display: flex; gap: 6px; }
+  .adv-btn { flex: 1; padding: 7px; background: var(--red); color: #fff; border: none; font-size: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: var(--font-body); }
+  .adv-btn:hover { background: var(--red-dark); }
+  .cxl-btn { padding: 7px 10px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); font-size: 11px; cursor: pointer; font-family: var(--font-body); font-weight: 600; }
+  .cxl-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* Branch lock notice */
+  .branch-lock-notice { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 6px; padding: 6px 12px; font-size: 11px; color: var(--blue); display: flex; align-items: center; gap: 6px; }
+
+  /* Toast */
+  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface2); color: var(--text); padding: 12px 22px; border-radius: 8px; border: 1px solid var(--border); transition: transform 0.3s; z-index: 1000; font-size: 13px; white-space: nowrap; }
   #toast.show { transform: translateX(-50%) translateY(0); }
-  
+
+  /* Scrollbars */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-logo">🍕 <span>CRISPY</span></div>
-  <div class="tab-switch">
-    <button class="tab-btn active" onclick="switchView('pos')">POS</button>
-    <button class="tab-btn" onclick="switchView('dashboard')">Dashboard</button>
-  </div>
-  <div class="topbar-right">
-    <span><span class="status-dot"></span>Live</span>
-    <span class="clock" id="clock">00:00:00</span>
+<!-- PIN SCREEN -->
+<div id="pin-screen">
+  <div class="pin-bg"></div>
+  <div class="pin-logo">🍕 <span>CRISPY</span></div>
+  <div class="pin-tagline">POS &amp; Admin Terminal</div>
+  <div class="pin-box">
+    <div class="pin-title" id="pinTitle">ENTER PIN</div>
+    <div class="pin-hint" id="pinHint">Admin or Branch Manager PIN</div>
+    <div class="pin-display" id="pinDisplay">────</div>
+    <div class="pin-grid">
+      <button class="pin-btn" onclick="pp('1')">1</button>
+      <button class="pin-btn" onclick="pp('2')">2</button>
+      <button class="pin-btn" onclick="pp('3')">3</button>
+      <button class="pin-btn" onclick="pp('4')">4</button>
+      <button class="pin-btn" onclick="pp('5')">5</button>
+      <button class="pin-btn" onclick="pp('6')">6</button>
+      <button class="pin-btn" onclick="pp('7')">7</button>
+      <button class="pin-btn" onclick="pp('8')">8</button>
+      <button class="pin-btn" onclick="pp('9')">9</button>
+      <button class="pin-btn pin-del" onclick="pd()">⌫</button>
+      <button class="pin-btn" onclick="pp('0')">0</button>
+      <button class="pin-btn pin-ok" onclick="ps()">✓</button>
+    </div>
+    <div class="pin-error" id="pinErr"></div>
   </div>
 </div>
 
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">🍕 <span>CRISPY</span> <span id="roleBadge" class="admin-badge">ADMIN</span></div>
+  <div class="tab-switch">
+    <button class="tab-btn active" onclick="switchView('pos')">POS</button>
+    <button class="tab-btn"        onclick="switchView('dashboard')">Dashboard</button>
+  </div>
+  <div class="topbar-right">
+    <span><span class="status-dot"></span>Live</span>
+    <span class="role-label" id="roleLabel"></span>
+    <span class="clock" id="clock">00:00:00</span>
+    <button class="lock-btn" onclick="lockScreen()">🔒 Lock</button>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
+
   <!-- POS VIEW -->
   <div id="pos-view">
+    <!-- Menu Panel -->
     <div class="menu-panel">
       <div class="menu-header">
-        <div class="search-bar"><input type="text" id="searchInput" placeholder="Search items..." onkeyup="renderMenu()"></div>
+        <div class="search-bar">
+          <span style="color:var(--text-dim);font-size:16px;">⌕</span>
+          <input type="search" id="searchInput" placeholder="Search items..." autocomplete="off" oninput="renderMenu()">
+        </div>
         <div class="cat-tabs" id="catTabs"></div>
       </div>
       <div class="menu-grid" id="menuGrid"></div>
     </div>
 
+    <!-- Order Panel -->
     <div class="order-panel">
       <div class="order-header">
         <div class="order-title">ORDER</div>
         <div class="order-type-row">
-          <button class="order-type-btn active" onclick="setType('dine-in', this)">Dine-in</button>
-          <button class="order-type-btn" onclick="setType('takeaway', this)">Takeaway</button>
-          <button class="order-type-btn" onclick="setType('delivery', this)">Delivery</button>
+          <button class="order-type-btn active" onclick="setType('dine-in',this)">🍽 Dine-in</button>
+          <button class="order-type-btn"        onclick="setType('takeaway',this)">🥡 Takeaway</button>
+          <button class="order-type-btn"        onclick="setType('delivery',this)">🛵 Delivery</button>
         </div>
         <div class="order-source">
           <div class="order-source-label">Order From</div>
           <div class="source-btns">
-            <button class="source-btn active" onclick="setSource('Counter', this)">Counter</button>
-            <button class="source-btn" onclick="setSource('Website', this)">Website</button>
+            <button class="source-btn active" onclick="setSource('Counter',this)">Counter</button>
+            <button class="source-btn"        onclick="setSource('Website',this)">Website</button>
+            <button class="source-btn"        onclick="setSource('Phone',this)">Phone</button>
           </div>
         </div>
         <div class="order-fields">
-          <!-- BRANCH SELECTION FOR POS -->
-          <select id="posBranch" class="order-input" style="font-weight: bold; border-color: var(--text-dim);">
-            <option value="Main Branch">Gamber Branch</option>
-            <option value="Branch 2">Sahiwal Branch</option>
-            <option value="Branch 3">Noor Park Branch</option>
-          </select>
-          <input type="text" class="order-input" id="custName" placeholder="Customer name">
-          <input type="tel" class="order-input" id="custPhone" placeholder="Phone Number (Required for delivery)">
-          <input type="text" class="order-input" id="tableNum" placeholder="Table # OR Delivery Address">
+          <div id="branchFieldWrap"><!-- injected on login --></div>
+          <input type="text" class="order-input" id="custName"  placeholder="Customer name" autocomplete="off">
+          <input type="tel"  class="order-input" id="custPhone" placeholder="Phone (required for delivery)" autocomplete="off">
+          <input type="text" class="order-input" id="tableNum"  placeholder="Table # or Delivery Address" autocomplete="off">
+          <input type="text" class="order-input" id="orderNote" placeholder="Order note (optional)" autocomplete="off">
         </div>
       </div>
-      <div id="cartItems"></div>
+      <div id="cartItems">
+        <div class="cart-empty"><span style="font-size:30px">🛒</span><span>Cart is empty</span></div>
+      </div>
       <div class="order-footer">
         <div class="totals-row"><span>Subtotal</span><span id="subtotalVal">Rs. 0</span></div>
-        <div class="totals-row grand"><span>Total</span><span id="grandTotal">Rs. 0</span></div>
+        <div class="totals-row grand"><span>TOTAL</span><span id="grandTotal">Rs. 0</span></div>
         <div class="order-actions">
           <button class="clear-btn" onclick="clearCart()">Clear</button>
-          <button class="place-btn" id="placeBtn" onclick="placeOrder()">Place Order</button>
+          <button class="place-btn" id="placeBtn" onclick="placeOrder()" disabled>Place Order</button>
         </div>
       </div>
     </div>
@@ -187,373 +280,575 @@
 
   <!-- DASHBOARD VIEW -->
   <div id="dashboard-view">
-    <!-- DASHBOARD BRANCH FILTER -->
     <div class="dash-controls">
-      <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">FILTER BY BRANCH:</span>
-      <select id="dashBranchFilter" class="order-input" style="width: 200px;" onchange="renderDashboard()">
-        <option value="All">All Branches</option>
-        <option value="Main Branch">Gamber Branch</option>
-        <option value="Branch 2">Sahiwal Branch</option>
-        <option value="Branch 3">Noor Park Branch</option>
-      </select>
+      <span class="dash-label">Branch:</span>
+      <div id="branchFilterWrap"><!-- injected on login --></div>
+      <button onclick="clearDoneOrders()" style="padding:6px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:11px;cursor:pointer;font-weight:600;font-family:var(--font-body);">🧹 Clear Done</button>
     </div>
-
     <div class="dash-stats" id="dashStats"></div>
     <div class="kanban-view">
       <div class="kanban-col">
-        <div class="col-header"><div class="col-title">📝 New</div><div class="col-count" id="cnt-new">0</div></div>
+        <div class="col-header">
+          <div><div class="col-title">📝 New</div><div class="col-count" id="cnt-new">0</div></div>
+          <div class="col-bar" style="background:var(--yellow)"></div>
+        </div>
         <div class="col-content" id="col-new"></div>
       </div>
       <div class="kanban-col">
-        <div class="col-header"><div class="col-title">🔥 Preparing</div><div class="col-count" id="cnt-prep">0</div></div>
+        <div class="col-header">
+          <div><div class="col-title">🔥 Preparing</div><div class="col-count" id="cnt-prep">0</div></div>
+          <div class="col-bar" style="background:var(--orange)"></div>
+        </div>
         <div class="col-content" id="col-prep"></div>
       </div>
       <div class="kanban-col">
-        <div class="col-header"><div class="col-title">✓ Ready</div><div class="col-count" id="cnt-ready">0</div></div>
+        <div class="col-header">
+          <div><div class="col-title">✓ Ready</div><div class="col-count" id="cnt-ready">0</div></div>
+          <div class="col-bar" style="background:var(--blue)"></div>
+        </div>
         <div class="col-content" id="col-ready"></div>
       </div>
       <div class="kanban-col">
-        <div class="col-header"><div class="col-title">🎉 Done</div><div class="col-count" id="cnt-done">0</div></div>
+        <div class="col-header">
+          <div><div class="col-title">🎉 Done</div><div class="col-count" id="cnt-done">0</div></div>
+          <div class="col-bar" style="background:var(--green)"></div>
+        </div>
         <div class="col-content" id="col-done"></div>
       </div>
     </div>
   </div>
-</div>
+
+</div><!-- /.main -->
 
 <div id="toast"></div>
 
-<!-- FIREBASE SDK -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
-  authDomain: "crispypizza-aa734.firebaseapp.com",
-  projectId: "crispypizza-aa734",
-  storageBucket: "crispypizza-aa734.firebasestorage.app",
+// ════════════════════════════════════════════════
+// FIREBASE CONFIG
+// ════════════════════════════════════════════════
+firebase.initializeApp({
+  apiKey:            "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
+  authDomain:        "crispypizza-aa734.firebaseapp.com",
+  projectId:         "crispypizza-aa734",
+  storageBucket:     "crispypizza-aa734.firebasestorage.app",
   messagingSenderId: "359399692159",
-  appId: "1:359399692159:web:72fb1804ffa198b229ac4a"
-};
-firebase.initializeApp(firebaseConfig);
+  appId:             "1:359399692159:web:72fb1804ffa198b229ac4a"
+});
 const db = firebase.firestore();
 
-// FULL MENU ARRAY RESTORED
-const MENU =[
-  // PIZZAS - Regular
-  { id: 1, name: "Achari Pizza", price: 650, cat: "Pizzas", emoji: "🍕" },
-  { id: 2, name: "Biggeri Suprema Pizza", price: 850, cat: "Pizzas", emoji: "🍕" },
-  { id: 3, name: "Creamy Pizza", price: 750, cat: "Pizzas", emoji: "🍕" },
-  { id: 4, name: "Fried Chicken Pizza", price: 750, cat: "Pizzas", emoji: "🍕" },
+// Enable offline persistence
+db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
 
-  // PIZZAS - Highly Recommended
-  { id: 5, name: "Crown Crust (M)", price: 1400, cat: "Pizzas", emoji: "👑" },
-  { id: 6, name: "Crown Crust (L)", price: 1890, cat: "Pizzas", emoji: "👑" },
-  { id: 7, name: "Crunchy Pizza (M)", price: 1490, cat: "Pizzas", emoji: "🍕" },
-  { id: 8, name: "Crunchy Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🍕" },
 
-  // PIZZAS - Specialty
-  { id: 9, name: "Crispy Hub Special (S)", price: 700, cat: "Pizzas", emoji: "⭐" },
-  { id: 10, name: "Crispy Hub Special (M)", price: 1300, cat: "Pizzas", emoji: "⭐" },
-  { id: 11, name: "Crispy Hub Special (L)", price: 1700, cat: "Pizzas", emoji: "⭐" },
-  { id: 12, name: "Stuff Crust (M)", price: 1320, cat: "Pizzas", emoji: "🍕" },
-  { id: 13, name: "Stuff Crust (L)", price: 1420, cat: "Pizzas", emoji: "🍕" },
-  { id: 14, name: "Behari Rabab (M)", price: 1400, cat: "Pizzas", emoji: "🍕" },
-  { id: 15, name: "Behari Rabab (L)", price: 1840, cat: "Pizzas", emoji: "🍕" },
-  { id: 16, name: "Malai Boti Pizza (M)", price: 1280, cat: "Pizzas", emoji: "🍕" },
-  { id: 17, name: "Malai Boti Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🍕" },
-  { id: 18, name: "Square Pizza (S)", price: 800, cat: "Pizzas", emoji: "⬜" },
-  { id: 19, name: "Square Pizza (L)", price: 1800, cat: "Pizzas", emoji: "⬜" },
-  { id: 20, name: "Extreme Pizza (M)", price: 1320, cat: "Pizzas", emoji: "🔥" },
-  { id: 21, name: "Extreme Pizza (L)", price: 1890, cat: "Pizzas", emoji: "🔥" },
-  { id: 22, name: "Fire Rose Pizza (M)", price: 1450, cat: "Pizzas", emoji: "🌹" },
-  { id: 23, name: "Fire Rose Pizza (L)", price: 1990, cat: "Pizzas", emoji: "🌹" },
-  { id: 24, name: "Farm House Delights Pizza (M)", price: 1450, cat: "Pizzas", emoji: "🏡" },
-  { id: 25, name: "Farm House Delights Pizza (L)", price: 1990, cat: "Pizzas", emoji: "🏡" },
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let currentUser    = null;
+let cart           =[];
+let orderType      = 'dine-in';
+let orderSource    = 'Counter';
+let orders         =[];
+let seenIds        = new Set();
+let firestoreUnsub = null;
 
-  // PIZZAS - Traditional
-  { id: 26, name: "Chicken Tikka Pizza", price: 800, cat: "Pizzas", emoji: "🍕" },
-  { id: 27, name: "Hot & Spicy Pizza", price: 800, cat: "Pizzas", emoji: "🌶️" },
-  { id: 28, name: "Chicken Fajita Pizza", price: 850, cat: "Pizzas", emoji: "🍕" },
-  { id: 29, name: "Cheese Lover Pizza", price: 750, cat: "Pizzas", emoji: "🧀" },
-  { id: 30, name: "Hot Sicilian Pizza", price: 800, cat: "Pizzas", emoji: "🍕" },
-  { id: 31, name: "Veg Max Pizza", price: 600, cat: "Pizzas", emoji: "🥬" },
+let MENU           = [];
+let CATS           = ['All'];
+let activeCategory = 'All';
 
-  // SHAWARMA & ROLLS
-  { id: 32, name: "Zinger Shawarma", price: 330, cat: "Shawarma", emoji: "🌯" },
-  { id: 33, name: "Zinger Cheese Shawarma", price: 370, cat: "Shawarma", emoji: "🌯" },
-  { id: 34, name: "Zinger Paratha Shawarma", price: 380, cat: "Shawarma", emoji: "🌯" },
-  { id: 35, name: "Zinger Cheese Paratha Roll", price: 370, cat: "Shawarma", emoji: "🌯" },
-  { id: 36, name: "Seekh Zinger Paratha Roll", price: 320, cat: "Shawarma", emoji: "🌯" },
+// ════════════════════════════════════════════════
+// CLOCK
+// ════════════════════════════════════════════════
+function tickClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-PK', { hour12: false });
+}
+tickClock();
+setInterval(tickClock, 1000);
 
-  // BURGERS
-  { id: 37, name: "Zinger Burger", price: 380, cat: "Burgers", emoji: "🍔" },
-  { id: 38, name: "Chicken Burger", price: 320, cat: "Burgers", emoji: "🍔" },
-  { id: 39, name: "Spice Burger", price: 350, cat: "Burgers", emoji: "🍔" },
-  { id: 40, name: "Chicken Cheese Burger", price: 360, cat: "Burgers", emoji: "🍔" },
-  { id: 41, name: "Zinger Cheese Burger", price: 420, cat: "Burgers", emoji: "🍔" },
-  { id: 42, name: "Crispy Hub Special Burger", price: 650, cat: "Burgers", emoji: "🍔" },
-
-  // PASTA
-  { id: 43, name: "Crispy Hub Spid Pasta", price: 700, cat: "Pasta", emoji: "🍝" },
-  { id: 44, name: "Crunchy Pasta", price: 800, cat: "Pasta", emoji: "🍝" },
-
-  // APPETIZERS & SIDES
-  { id: 45, name: "Hot Wings (5 Pc)", price: 350, cat: "Appetizers", emoji: "🍗" },
-  { id: 46, name: "Hot Wings (8 Pc)", price: 550, cat: "Appetizers", emoji: "🍗" },
-  { id: 47, name: "Nuggets", price: 290, cat: "Appetizers", emoji: "🍖" },
-  { id: 48, name: "Hot Shot", price: 540, cat: "Appetizers", emoji: "🔥" },
-  { id: 49, name: "Loaded Fries", price: 860, cat: "Appetizers", emoji: "🍟" },
-  { id: 50, name: "French Fries (Regular)", price: 250, cat: "Appetizers", emoji: "🍟" },
-  { id: 51, name: "French Fries (Large)", price: 380, cat: "Appetizers", emoji: "🍟" },
-
-  // COMBOS
-  { id: 52, name: "2 Small Pizza + 1 Drink", price: 1850, cat: "Deals", emoji: "🎁" },
-  { id: 53, name: "1 Large Pizza + 1 Drink", price: 2410, cat: "Deals", emoji: "🎁" },
-  { id: 54, name: "2 Large Pizza + 2 Drink", price: 3600, cat: "Deals", emoji: "🎁" },
-  { id: 55, name: "1 Large Pizza + 1 Burger", price: 2080, cat: "Deals", emoji: "🎁" },
-  { id: 56, name: "2 Large Pizza + 2 Burger", price: 3590, cat: "Deals", emoji: "🎁" },
-  { id: 57, name: "1 Small Pizza + 1 Large Drink", price: 1460, cat: "Deals", emoji: "🎁" },
-  { id: 58, name: "2 Hot Wings + 1 Med Pizza + Drink", price: 1740, cat: "Deals", emoji: "🎁" },
-  { id: 59, name: "1 L Pizza + 1 M Pizza + Drink", price: 2630, cat: "Deals", emoji: "🎁" },
-  { id: 60, name: "1 Hot Wings + M Pizza + Drink + Fries", price: 1440, cat: "Deals", emoji: "🎁" },
-
-  // COLD COFFEES
-  { id: 61, name: "Hazelnut Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
-  { id: 62, name: "Caramel Frappuccino", price: 550, cat: "Coffee", emoji: "☕" },
-  { id: 63, name: "Irish Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
-  { id: 64, name: "French Vanilla Frappuccino", price: 500, cat: "Coffee", emoji: "☕" },
-  { id: 65, name: "Cold Coffee", price: 450, cat: "Coffee", emoji: "☕" },
-  { id: 66, name: "Kit Kat special", price: 650, cat: "Coffee", emoji: "☕" },
-  { id: 67, name: "Butter Scotch Frappuccino", price: 600, cat: "Coffee", emoji: "☕" },
-
-  // HOT COFFEES
-  { id: 68, name: "Cappuccino", price: 450, cat: "Coffee", emoji: "☕" },
-  { id: 69, name: "Café Lattee", price: 470, cat: "Coffee", emoji: "☕" },
-  { id: 70, name: "Espresso Single Shots", price: 300, cat: "Coffee", emoji: "☕" },
-  { id: 71, name: "Espresso Double Shot", price: 450, cat: "Coffee", emoji: "☕" },
-  { id: 72, name: "Caramel Coffee", price: 550, cat: "Coffee", emoji: "☕" },
-  { id: 73, name: "Americano", price: 420, cat: "Coffee", emoji: "☕" },
-  { id: 74, name: "CPH Special Coffee", price: 550, cat: "Coffee", emoji: "☕" },
-  { id: 75, name: "Nescafe Coffee", price: 250, cat: "Coffee", emoji: "☕" },
-
-  // TEA
-  { id: 76, name: "Karak Chai", price: 150, cat: "Coffee", emoji: "🍵" },
-  { id: 77, name: "Cardamom", price: 200, cat: "Coffee", emoji: "🍵" },
-  { id: 78, name: "Chocolate Tea", price: 230, cat: "Coffee", emoji: "🍵" },
-  { id: 79, name: "Caramel Tea", price: 200, cat: "Coffee", emoji: "🍵" },
-
-  // SMOOTHIES
-  { id: 80, name: "Raspberry", price: 350, cat: "Drinks", emoji: "🥤" },
-  { id: 81, name: "Red Orange", price: 350, cat: "Drinks", emoji: "🥤" },
-  { id: 82, name: "Mango", price: 350, cat: "Drinks", emoji: "🥤" },
-  { id: 83, name: "Green Apple", price: 350, cat: "Drinks", emoji: "🥤" },
-  { id: 84, name: "Blue Curacao", price: 350, cat: "Drinks", emoji: "🥤" },
-
-  // COCKTAILS
-  { id: 85, name: "Fresh Lime", price: 150, cat: "Drinks", emoji: "🍋" },
-  { id: 86, name: "Lemonade", price: 200, cat: "Drinks", emoji: "🍋" },
-  { id: 87, name: "Mint Margarita", price: 250, cat: "Drinks", emoji: "🍹" },
-  { id: 88, name: "Electric Lemonade", price: 320, cat: "Drinks", emoji: "⚡" },
-  { id: 89, name: "Pink Lady", price: 400, cat: "Drinks", emoji: "💗" },
-  { id: 90, name: "Blue Lagoon", price: 450, cat: "Drinks", emoji: "🌊" },
-  { id: 91, name: "Pina Colada", price: 600, cat: "Drinks", emoji: "🥥" },
-  { id: 92, name: "Strawberry Colada", price: 520, cat: "Drinks", emoji: "🍓" },
-
-  // FRESH SHAKES
-  { id: 93, name: "Mango Shake", price: 250, cat: "Drinks", emoji: "🥤" },
-  { id: 94, name: "Banana Shake", price: 200, cat: "Drinks", emoji: "🥤" },
-  { id: 95, name: "Apple Shake", price: 200, cat: "Drinks", emoji: "🥤" },
-  { id: 96, name: "Khajoor Badam Shake", price: 400, cat: "Drinks", emoji: "🥤" },
-  { id: 97, name: "Peach Shake", price: 200, cat: "Drinks", emoji: "🥤" },
-
-  // ICE CREAM SHAKES
-  { id: 98, name: "Kulfa Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
-  { id: 99, name: "Mango Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
-  { id: 100, name: "Vanilla Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
-  { id: 101, name: "Chocolate Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
-  { id: 102, name: "Oreo Shake", price: 500, cat: "Ice Cream", emoji: "🍦" },
-  { id: 103, name: "Cold Coffee", price: 520, cat: "Ice Cream", emoji: "☕" },
-
-  // ICE CREAM
-  { id: 104, name: "Mango Pista (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
-  { id: 105, name: "Kulfa (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
-  { id: 106, name: "Chocolate (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
-  { id: 107, name: "Caramel Crunch (S)", price: 220, cat: "Ice Cream", emoji: "🍦" },
-  
-  { id: 108, name: "Mango Pista (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
-  { id: 109, name: "Kulfa (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
-  { id: 110, name: "Chocolate (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
-  { id: 111, name: "Caramel Crunch (M)", price: 320, cat: "Ice Cream", emoji: "🍦" },
-  
-  { id: 112, name: "Mango Pista (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
-  { id: 113, name: "Kulfa (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
-  { id: 114, name: "Chocolate (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
-  { id: 115, name: "Caramel Crunch (L)", price: 440, cat: "Ice Cream", emoji: "🍦" },
-];
-
-const CATS =["All", ...new Set(MENU.map(i => i.cat))];
-let activeCategory = "All", searchQuery = "", cart =[];
-let orderType = "dine-in", orderSource = "Counter";
-let orders =[], orderCounter = 1001;
-
-function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-PK', { hour12: false }); }
-setInterval(updateClock, 1000); updateClock();
-
+// ════════════════════════════════════════════════
+// VIEW SWITCHING
+// ════════════════════════════════════════════════
 function switchView(v) {
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (v === 'pos' && i === 0) || (v === 'dashboard' && i === 1)));
-  document.getElementById('pos-view').style.display = v === 'pos' ? 'flex' : 'none';
+  document.querySelectorAll('.tab-btn').forEach((b, i) =>
+    b.classList.toggle('active', (v === 'pos' && i === 0) || (v === 'dashboard' && i === 1))
+  );
+  document.getElementById('pos-view').style.display       = v === 'pos'       ? 'flex' : 'none';
   document.getElementById('dashboard-view').style.display = v === 'dashboard' ? 'flex' : 'none';
   if (v === 'dashboard') renderDashboard();
 }
 
-function renderCatTabs() { document.getElementById('catTabs').innerHTML = CATS.map(c => `<button class="cat-tab ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`).join(''); }
-function setCategory(c) { activeCategory = c; renderCatTabs(); renderMenu(); }
-
-function renderMenu() {
-  searchQuery = document.getElementById('searchInput').value.toLowerCase();
-  const grid = document.getElementById('menuGrid');
-  grid.innerHTML = MENU.filter(i => (activeCategory === 'All' || i.cat === activeCategory) && i.name.toLowerCase().includes(searchQuery))
-    .map(i => `<div class="menu-item" onclick="addToCart(${i.id})"><div class="item-emoji">${i.emoji}</div><div class="item-name">${i.name}</div><div class="item-price">Rs. ${i.price}</div></div>`).join('');
+// ════════════════════════════════════════════════
+// PIN LOGIC
+// ════════════════════════════════════════════════
+let pinBuf = '';
+function pp(d) { if (pinBuf.length >= 4) return; pinBuf += d; updPin(); if (pinBuf.length === 4) setTimeout(ps, 160); }
+function pd() { pinBuf = pinBuf.slice(0, -1); updPin(); }
+function updPin() {
+  document.getElementById('pinDisplay').textContent = '●'.repeat(pinBuf.length) + '─'.repeat(4 - pinBuf.length);
 }
 
-function addToCart(id) {
-  const item = MENU.find(i => i.id === id);
-  const existing = cart.find(c => c.id === id);
-  if (existing) existing.qty++; else cart.push({ ...item, qty: 1 });
-  renderCart(); showToast(`${item.name} added`);
+// Authenticate Admin/Manager from Firebase
+async function ps() {
+  if (pinBuf.length !== 4) return;
+  
+  try {
+    const doc = await db.collection('users').doc(pinBuf).get();
+    const data = doc.data();
+    
+    if (doc.exists && (data.role === 'superadmin' || data.role === 'manager')) {
+      currentUser = { ...data, pin: pinBuf };
+      document.getElementById('pin-screen').classList.add('hidden');
+      document.getElementById('pinErr').textContent = '';
+      
+      onLogin(); 
+      loadMenuFromFirebase(); 
+    } else {
+      showPinError();
+    }
+  } catch(e) {
+    console.error("Auth Error", e);
+    showPinError();
+  }
 }
-function changeQty(id, delta) {
-  const idx = cart.findIndex(c => c.id === id);
-  if (idx === -1) return; cart[idx].qty += delta;
-  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+
+function showPinError() {
+  const errEl = document.getElementById('pinErr');
+  errEl.textContent = '✗ Wrong PIN — try again';
+  errEl.style.animation = 'none';
+  errEl.offsetHeight;
+  errEl.style.animation = '';
+  pinBuf = '';
+  updPin();
+}
+
+function lockScreen() {
+  pinBuf = ''; updPin();
+  currentUser = null;
+  document.getElementById('pinErr').textContent = '';
+  document.getElementById('pin-screen').classList.remove('hidden');
+  stopFirebaseListener();
+  cart =[];
   renderCart();
 }
 
-function renderCart() {
-  document.getElementById('cartItems').innerHTML = cart.map(i => `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-price">Rs. ${i.price * i.qty}</div></div><div class="qty-control"><button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button><span>${i.qty}</span><button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button></div></div>`).join('');
-  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  document.getElementById('subtotalVal').textContent = `Rs. ${sub}`;
-  document.getElementById('grandTotal').textContent = `Rs. ${sub}`;
-  document.getElementById('placeBtn').disabled = cart.length === 0;
-}
-function clearCart() { 
-  cart =[]; 
-  document.getElementById('custName').value = '';
-  document.getElementById('custPhone').value = '';
-  document.getElementById('tableNum').value = '';
-  renderCart(); 
-}
-
-function setType(type, el) { orderType = type; document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
-function setSource(src, el) { orderSource = src; document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
-
-async function placeOrder() {
-  if (cart.length === 0) return;
-  document.getElementById('placeBtn').disabled = true;
-
-  const branch = document.getElementById('posBranch').value;
-  const order = {
-    localId: orderCounter++,
-    branch: branch,
-    items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
-    type: orderType, 
-    source: orderSource,
-    customer: document.getElementById('custName').value || 'Walk-in',
-    phone: document.getElementById('custPhone').value,       
-    address: document.getElementById('tableNum').value,      
-    total: cart.reduce((s, i) => s + i.price * i.qty, 0),
-    status: 'new', 
-    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  };
-
-  await db.collection('orders').add(order);
-  showToast(`✅ Order placed at ${branch}!`);
-  clearCart();
-  document.getElementById('placeBtn').disabled = false;
-}
-
-// 🔥 UPDATE: FETCH ORDERS WITH 4:00 AM "BUSINESS DAY" RESET 🔥
-db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snap => {
-  
-  // Calculate the start of the current shift
-  const startOfDay = new Date();
-  if (startOfDay.getHours() < 4) {
-    // If it is 1 AM, 2 AM, or 3 AM, we still count it as "Yesterday's" shift
-    startOfDay.setDate(startOfDay.getDate() - 1);
-  }
-  // Set the reset time to exactly 4:00 AM
-  startOfDay.setHours(4, 0, 0, 0);
-
-  orders = snap.docs
-    .map(doc => ({ firebaseId: doc.id, ...doc.data(), time: doc.data().timestamp ? doc.data().timestamp.toDate() : new Date() }))
-    // Keep all orders placed after the 4:00 AM shift start
-    .filter(order => order.time >= startOfDay);
-
-  if (document.getElementById('dashboard-view').style.display === 'flex') {
-    renderDashboard();
-  }
+// Keyboard support for PIN
+document.addEventListener('keydown', e => {
+  if (document.getElementById('pin-screen').classList.contains('hidden')) return;
+  if (e.key >= '0' && e.key <= '9') pp(e.key);
+  else if (e.key === 'Backspace') pd();
+  else if (e.key === 'Enter') ps();
 });
 
-async function advanceOrder(firebaseId) {
-  const order = orders.find(o => o.firebaseId === firebaseId);
-  const flow =['new', 'preparing', 'ready', 'done'];
-  const newStatus = flow[flow.indexOf(order.status) + 1];
-  if(newStatus) {
-    await db.collection('orders').doc(firebaseId).update({ status: newStatus });
+// ════════════════════════════════════════════════
+// ON LOGIN & LOAD MENU
+// ════════════════════════════════════════════════
+function onLogin() {
+  const u            = currentUser;
+  const isSuperAdmin = u.role === 'superadmin';
+
+  // Topbar badge
+  const badge = document.getElementById('roleBadge');
+  badge.textContent = isSuperAdmin ? 'SUPERADMIN' : 'MANAGER';
+  badge.className   = isSuperAdmin ? 'admin-badge' : 'manager-badge';
+  document.getElementById('roleLabel').textContent = u.name;
+
+  // POS branch selector
+  const bfw = document.getElementById('branchFieldWrap');
+  if (isSuperAdmin) {
+    bfw.innerHTML = `<select id="posBranch" class="order-input" style="font-weight:bold;">
+      <option value="Gamber Branch">Gamber Branch</option>
+      <option value="Sahiwal Branch">Sahiwal Branch</option>
+      <option value="Noor Park Branch">Noor Park Branch</option>
+    </select>`;
+  } else {
+    bfw.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch}</div>`;
+  }
+
+  // Dashboard branch filter
+  const bfr = document.getElementById('branchFilterWrap');
+  if (isSuperAdmin) {
+    bfr.innerHTML = `<select id="dashBranchFilter" class="order-input" style="width:200px;" onchange="renderDashboard()">
+      <option value="All">All Branches</option>
+      <option value="Gamber Branch">Gamber Branch</option>
+      <option value="Sahiwal Branch">Sahiwal Branch</option>
+      <option value="Noor Park Branch">Noor Park Branch</option>
+    </select>`;
+  } else {
+    bfr.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch} — Your Branch</div>`;
+  }
+
+  showToast('Loading Menu...');
+  startFirebaseListener();
+}
+
+async function loadMenuFromFirebase() {
+  try {
+    const snap = await db.collection('menu').get();
+    MENU = snap.docs.map(doc => doc.data());
+    // Sort menu so items show in a consistent order
+    MENU.sort((a, b) => a.id - b.id); 
+    
+    CATS =['All', ...new Set(MENU.map(i => i.cat))];
+    renderCatTabs();
+    renderMenu();
+    showToast('✅ Ready!');
+  } catch(e) {
+    console.error("Menu load error:", e);
+    showToast('⚠️ Failed to load menu.');
   }
 }
 
-// 🔥 BUG FIX: Mapped columns properly instead of using substring(0,4) 🔥
-function renderDashboard() {
-  const filterBranch = document.getElementById('dashBranchFilter').value;
+// ════════════════════════════════════════════════
+// MENU RENDER
+// ════════════════════════════════════════════════
+function renderCatTabs() {
+  document.getElementById('catTabs').innerHTML = CATS.map(c =>
+    `<button class="cat-tab ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
+  ).join('');
+}
+function setCategory(c) { activeCategory = c; renderCatTabs(); renderMenu(); }
+function renderMenu() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.getElementById('menuGrid').innerHTML = MENU
+    .filter(i => (activeCategory === 'All' || i.cat === activeCategory) && i.name.toLowerCase().includes(q))
+    .map(i => `<div class="menu-item" onclick="addToCart(${i.id})">
+      <div class="item-emoji">${i.emoji}</div>
+      <div class="item-name">${i.name}</div>
+      <div class="item-price">Rs. ${i.price.toLocaleString()}</div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// CART
+// ════════════════════════════════════════════════
+function addToCart(id) {
+  const item = MENU.find(i => i.id === id);
+  if (!item) return;
+  const ex = cart.find(c => c.id === id);
+  if (ex) ex.qty++; else cart.push({ ...item, qty: 1 });
+  renderCart();
+  showToast(`${item.emoji} ${item.name} added`);
+}
+function changeQty(id, d) {
+  const idx = cart.findIndex(c => c.id === id);
+  if (idx === -1) return;
+  cart[idx].qty += d;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  renderCart();
+}
+function renderCart() {
+  const el = document.getElementById('cartItems');
+  if (!cart.length) {
+    el.innerHTML = '<div class="cart-empty"><span style="font-size:30px">🛒</span><span>Cart is empty</span></div>';
+    document.getElementById('placeBtn').disabled = true;
+    document.getElementById('subtotalVal').textContent = 'Rs. 0';
+    document.getElementById('grandTotal').textContent  = 'Rs. 0';
+    return;
+  }
+  el.innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">Rs. ${(i.price * i.qty).toLocaleString()}</div>
+      </div>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+        <span style="min-width:22px;text-align:center;font-family:var(--font-mono);font-size:13px;font-weight:600;">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+      </div>
+    </div>`).join('');
+  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('subtotalVal').textContent = `Rs. ${sub.toLocaleString()}`;
+  document.getElementById('grandTotal').textContent  = `Rs. ${sub.toLocaleString()}`;
+  document.getElementById('placeBtn').disabled = false;
+}
+function clearCart() {
+  cart = [];['custName', 'custPhone', 'tableNum', 'orderNote'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  // Reset type + source buttons
+  document.querySelectorAll('.order-type-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('.source-btn').forEach((b, i)      => b.classList.toggle('active', i === 0));
+  orderType   = 'dine-in';
+  orderSource = 'Counter';
+  renderCart();
+}
+function setType(t, el)   { orderType   = t; document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
+function setSource(s, el) { orderSource = s; document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));   el.classList.add('active'); }
+
+// ════════════════════════════════════════════════
+// GET CURRENT BRANCH (for POS)
+// ════════════════════════════════════════════════
+function getPosBranch() {
+  if (currentUser.role === 'superadmin') {
+    const el = document.getElementById('posBranch');
+    return el ? el.value : 'Gamber Branch';
+  }
+  return currentUser.branch;
+}
+
+// ════════════════════════════════════════════════
+// PLACE ORDER
+// ════════════════════════════════════════════════
+async function placeOrder() {
+  if (!cart.length || !currentUser) return;
+  const btn = document.getElementById('placeBtn');
+  btn.disabled    = true;
+  btn.textContent = 'Placing...';
   
-  const filteredOrders = filterBranch === "All" ? orders : orders.filter(o => (o.branch || "Main Branch") === filterBranch);
+  const branch = getPosBranch();
+  const localId = `P${Math.floor(1000 + Math.random() * 9000)}`;
+
+  try {
+    // We don't await here to prevent the UI from freezing if offline
+    db.collection('orders').add({
+      localId,
+      branch,
+      items:         cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+      type:          orderType,
+      source:        orderSource,
+      customer:      document.getElementById('custName').value.trim()  || 'Walk-in',
+      phone:         document.getElementById('custPhone').value.trim() || '',
+      address:       document.getElementById('tableNum').value.trim()  || '',
+      note:          document.getElementById('orderNote').value.trim() || '',
+      total:         cart.reduce((s, i) => s + i.price * i.qty, 0),
+      status:        'new',
+      placedBy:      'admin',
+      placedByName:  currentUser.name,
+      timestamp:     firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    showToast(`✅ Order placed at ${branch}!`);
+    clearCart();
+  } catch (e) {
+    console.error('Place order error:', e);
+    showToast('❌ Failed — check connection');
+  }
+  
+  btn.disabled    = false;
+  btn.textContent = 'Place Order';
+}
+
+// ════════════════════════════════════════════════
+// FIREBASE LIVE LISTENER
+// Sorted LOCALLY to prevent missing Index bugs.
+// ════════════════════════════════════════════════
+function startFirebaseListener() {
+  if (firestoreUnsub) return;
+
+  let query = db.collection('orders');
+  if (currentUser.role === 'manager') {
+    query = query.where('branch', '==', currentUser.branch);
+  }
+
+  firestoreUnsub = query.onSnapshot(
+    snap => {
+      const startOfDay = new Date();
+      if (startOfDay.getHours() < 4) startOfDay.setDate(startOfDay.getDate() - 1);
+      startOfDay.setHours(4, 0, 0, 0);
+
+      let incoming = snap.docs.map(doc => {
+        const data = doc.data();
+        return {
+          firebaseId: doc.id,
+          ...data,
+          time: data.timestamp ? data.timestamp.toDate() : new Date(),
+        };
+      });
+
+      // 1. Filter for today locally
+      incoming = incoming.filter(o => o.time >= startOfDay);
+
+      // 2. Sort locally by newest first
+      incoming.sort((a, b) => b.time - a.time);
+
+      // New order alert
+      if (seenIds.size > 0) {
+        incoming.forEach(o => {
+          if (!seenIds.has(o.firebaseId) && o.status === 'new') {
+            const src = o.placedBy === 'waiter' 
+              ? `🧑‍🍳 ${o.waiterName || 'Waiter'}` 
+              : o.source === 'Website' || o.placedBy === 'website' 
+                ? '🌐 Website' 
+                : '📞 Phone/Counter';
+            playAlert();
+            showToast(`🔔 New order from ${src} — ${o.customer || 'Guest'}`);
+            setTimeout(() => {
+              const c = document.getElementById('card-' + o.firebaseId);
+              if (c) c.classList.add('bell');
+            }, 300);
+          }
+        });
+      }
+
+      seenIds  = new Set(incoming.map(o => o.firebaseId));
+      orders   = incoming;
+
+      if (document.getElementById('dashboard-view').style.display === 'flex') {
+        renderDashboard();
+      }
+    },
+    err => {
+      console.error('Firestore listener error:', err);
+      showToast('⚠️ Listener error — check console');
+    }
+  );
+}
+
+function stopFirebaseListener() {
+  if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; }
+  orders  =[];
+  seenIds = new Set();
+}
+
+// ════════════════════════════════════════════════
+// ADVANCE / CANCEL ORDERS
+// ════════════════════════════════════════════════
+async function advanceOrder(fid) {
+  const o = orders.find(x => x.firebaseId === fid);
+  if (!o) return;
+  const seq  =['new', 'preparing', 'ready', 'done'];
+  const next = seq[seq.indexOf(o.status) + 1];
+  if (next) {
+    db.collection('orders').doc(fid).update({ status: next }).catch(console.error);
+  }
+}
+
+async function cancelOrder(fid) {
+  if (!confirm('Cancel this order?')) return;
+  db.collection('orders').doc(fid).delete().catch(console.error);
+}
+
+async function clearDoneOrders() {
+  const done = orders.filter(o => o.status === 'done');
+  if (!done.length) { showToast('No completed orders to clear'); return; }
+  const batch = db.batch();
+  done.forEach(o => batch.delete(db.collection('orders').doc(o.firebaseId)));
+  
+  await batch.commit().catch(e => {
+    console.error("Batch delete failed:", e);
+    showToast("⚠️ Could not clear all orders");
+  });
+  
+  showToast(`🧹 Cleared ${done.length} completed order${done.length > 1 ? 's' : ''}`);
+}
+
+// ════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ════════════════════════════════════════════════
+function getDashBranchFilter() {
+  if (currentUser.role === 'manager') return currentUser.branch;
+  const el = document.getElementById('dashBranchFilter');
+  return el ? el.value : 'All';
+}
+
+function renderDashboard() {
+  const fb  = getDashBranchFilter();
+  const f   = fb === 'All' ? orders : orders.filter(o => (o.branch || 'Gamber Branch') === fb);
+  const rev = f.filter(o => o.status === 'done').reduce((s, o) => s + (o.total || 0), 0);
 
   document.getElementById('dashStats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val red">${filteredOrders.length}</div></div>
-    <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val" style="color:var(--green)">Rs.${filteredOrders.filter(o=>o.status==='done').reduce((s,o)=>s+o.total,0)}</div></div>
-    <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val" style="color:var(--yellow)">${filteredOrders.filter(o=>o.status!=='done').length}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val" style="color:var(--red)">${f.length}</div><div class="stat-sub">Today's shift</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val" style="color:var(--green)">Rs.${rev.toLocaleString()}</div><div class="stat-sub">Completed only</div></div>
+    <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val" style="color:var(--yellow)">${f.filter(o => o.status !== 'done').length}</div><div class="stat-sub">In progress</div></div>
+    <div class="stat-card"><div class="stat-label">Waiter Orders</div><div class="stat-val" style="color:var(--orange)">${f.filter(o => o.placedBy === 'waiter').length}</div><div class="stat-sub">From staff</div></div>
+    <div class="stat-card"><div class="stat-label">Online Orders</div><div class="stat-val" style="color:var(--blue)">${f.filter(o => o.source === 'Website' || o.placedBy === 'website').length}</div><div class="stat-sub">Website / Phone</div></div>
   `;
 
-  const cols = ['new', 'preparing', 'ready', 'done'];
-  const colIds =['new', 'prep', 'ready', 'done']; // HTML IDs for the columns
-  const labels =['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
-  
+  const cols    =['new',  'preparing', 'ready', 'done'];
+  const colIds  =['new',  'prep',      'ready', 'done'];
+  const btnLabels = ['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
+  const now     = Date.now();
+
   cols.forEach((status, i) => {
-    const colId = colIds[i]; // Get proper HTML id mapping
-    const colOrders = filteredOrders.filter(o => o.status === status);
-    
-    document.getElementById(`cnt-${colId}`).textContent = colOrders.length;
-    document.getElementById(`col-${colId}`).innerHTML = colOrders.map(o => `
-      <div class="order-card">
-        <div class="order-card-top"><b>#${o.localId||o.firebaseId.substring(0,4)}</b> <span>${Math.floor((new Date()-o.time)/60000)}m ago</span></div>
-        
-        <!-- DISPLAY CUSTOMER NAME, PHONE, AND ADDRESS/TABLE -->
-        <div class="order-cust">
-          ${o.customer}
-          ${o.phone ? `<div class="cust-contact">📞 ${o.phone}</div>` : ''}
-          ${o.address ? `<div class="cust-contact">📍 ${o.address}</div>` : ''}
-          ${o.table && !o.address ? `<div class="cust-contact">🪑 T-${o.table}</div>` : ''}
+    const co    = f.filter(o => o.status === status);
+    document.getElementById(`cnt-${colIds[i]}`).textContent = co.length;
+    const el = document.getElementById(`col-${colIds[i]}`);
+    if (!co.length) {
+      el.innerHTML = '<div class="col-empty"><span style="font-size:22px;opacity:.2">◌</span><span>No orders</span></div>';
+      return;
+    }
+    el.innerHTML = co.map(o => {
+      const age  = Math.floor((now - o.time) / 60000);
+      const hot  = age >= 15 && status !== 'done';
+      const src  = o.placedBy === 'waiter' ? 'b-waiter'
+                 : (o.source === 'Website' || o.placedBy === 'website') ? 'b-website'
+                 : 'b-counter';
+      const srcLbl = o.placedBy === 'waiter' ? (o.waiterName || 'Waiter')
+                   : (o.source || 'Counter');
+      const typ  = o.type === 'delivery' ? 'b-delivery' : o.type === 'takeaway' ? 'b-takeaway' : 'b-dine';
+      const tableLabel = o.address
+        ? (o.type === 'delivery' ? `🛵 ${o.address}` : o.address)
+        : (o.type === 'delivery' ? '🛵 Delivery' : o.type === 'takeaway' ? '🥡 Takeaway' : (o.table ? 'Table ' + o.table : 'Walk-in'));
+      return `<div class="order-card ${hot ? 'urgent' : ''}" id="card-${o.firebaseId}">
+        <div class="card-head">
+          <span class="card-id">#${o.localId || o.firebaseId.slice(0, 6)}</span>
+          <span class="card-age ${hot ? 'hot' : ''}">${age < 1 ? 'Just now' : age + 'm ago'}${hot ? ' ⚠️' : ''}</span>
         </div>
-        
-        <div class="order-items-preview">${o.items.map(i=>`${i.qty}x ${i.name}`).join(', ')}</div>
-        <div class="order-card-bottom">
-          <span style="color:var(--green); font-weight:bold;">Rs. ${o.total}</span>
-          <div class="badges">
-            <span class="badge badge-branch">${o.branch || "Main Branch"}</span>
-            <span class="badge ${o.source === 'Website' ? 'badge-source-website' : 'badge-source-counter'}">${o.source}</span>
+        <div class="card-body">
+          <div class="card-table">${tableLabel}</div>
+          <div class="card-cust">${o.customer || 'Walk-in'}${o.phone ? '<br>📞 ' + o.phone : ''}</div>
+          <div class="card-items">${o.items.map(it => `${it.qty}× ${it.name}`).join('<br>')}</div>
+          ${o.note ? `<div class="card-note">💬 ${o.note}</div>` : ''}
+          <div class="card-bottom">
+            <span class="card-total">Rs. ${(o.total || 0).toLocaleString()}</span>
+            <div class="badges">
+              <span class="badge b-branch">${o.branch || 'Main'}</span>
+              <span class="badge ${typ}">${o.type || 'dine-in'}</span>
+              <span class="badge ${src}">${srcLbl}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            ${btnLabels[i] ? `<button class="adv-btn" onclick="advanceOrder('${o.firebaseId}')">${btnLabels[i]}</button>` : ''}
+            ${status !== 'done' ? `<button class="cxl-btn" onclick="cancelOrder('${o.firebaseId}')">✕ Cancel</button>` : ''}
           </div>
         </div>
-        ${labels[i] ? `<button class="advance-btn" onclick="advanceOrder('${o.firebaseId}')">${labels[i]}</button>` : ''}
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   });
 }
 
-function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+// ════════════════════════════════════════════════
+// ALERT BEEP
+// ════════════════════════════════════════════════
+function playAlert() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();[0, 200, 400].forEach(delay => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine'; o.frequency.value = 880;
+      const t = ctx.currentTime + delay / 1000;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.32, t + 0.01);
+      g.gain.linearRampToValueAtTime(0, t + 0.13);
+      o.start(t); o.stop(t + 0.16);
+    });
+  } catch (e) {}
+}
 
-renderCatTabs(); renderMenu();
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+// Refresh dashboard time labels every 30 seconds
+setInterval(() => {
+  if (document.getElementById('dashboard-view').style.display === 'flex') renderDashboard();
+}, 30000);
+
 </script>
 </body>
 </html>
