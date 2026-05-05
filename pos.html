@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Crispy Pizza Hub — POS &amp; Admin Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -19,41 +19,41 @@
   body { background: var(--black); color: var(--text); font-family: var(--font-body); font-size: 14px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
   /* ── PIN SCREEN ── */
-  #pin-screen { position: fixed; inset: 0; background: var(--black); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #pin-screen { position: fixed; inset: 0; background: var(--black); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; padding: 20px; }
   #pin-screen.hidden { display: none; }
   .pin-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(232,22,27,0.1) 0%, transparent 70%); pointer-events: none; }
-  .pin-logo { font-family: var(--font-display); font-size: 48px; color: var(--red); letter-spacing: 4px; position: relative; }
+  .pin-logo { font-family: var(--font-display); font-size: 48px; color: var(--red); letter-spacing: 4px; position: relative; margin-top: auto; }
   .pin-logo span { color: var(--text); }
-  .pin-tagline { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 40px; position: relative; }
-  .pin-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 300px; text-align: center; position: relative; }
-  .pin-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
-  .pin-hint { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
-  .pin-display { background: var(--black); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--font-mono); font-size: 26px; letter-spacing: 12px; color: var(--red); margin-bottom: 16px; height: 58px; display: flex; align-items: center; justify-content: center; }
-  .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-  .pin-btn { padding: 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 20px; font-family: var(--font-mono); cursor: pointer; transition: all 0.1s; }
+  .pin-tagline { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 32px; position: relative; text-align: center;}
+  .pin-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 340px; text-align: center; position: relative; margin-bottom: auto;}
+  .pin-title { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; margin-bottom: 4px; }
+  .pin-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+  .pin-display { background: var(--black); border: 1px solid var(--border); border-radius: 12px; padding: 14px; font-family: var(--font-mono); font-size: 28px; letter-spacing: 12px; color: var(--red); margin-bottom: 24px; height: 60px; display: flex; align-items: center; justify-content: center; }
+  .pin-grid { display: grid; grid-template-columns: repeat(3, 70px); justify-content: center; gap: 16px; margin-bottom: 12px; }
+  .pin-btn { width: 70px; height: 70px; background: var(--surface2); border: 1px solid var(--border); border-radius: 50%; color: var(--text); font-size: 24px; font-family: var(--font-mono); cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; padding: 0; }
   .pin-btn:hover { background: var(--surface3); }
-  .pin-btn:active { background: var(--red); border-color: var(--red); color: #fff; transform: scale(0.95); }
-  .pin-del { color: var(--text-muted); font-size: 17px; }
+  .pin-btn:active { background: var(--red); border-color: var(--red); color: #fff; transform: scale(0.92); }
+  .pin-del { color: var(--text-muted); font-size: 22px; }
   .pin-ok { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
   .pin-ok:hover { background: var(--red-dark); }
-  .pin-error { color: var(--red); font-size: 12px; min-height: 18px; margin-top: 4px; animation: shake 0.3s ease; }
+  .pin-error { color: var(--red); font-size: 13px; min-height: 18px; margin-top: 12px; animation: shake 0.3s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 
   /* ── TOPBAR ── */
-  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 52px; flex-shrink: 0; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 16px; min-height: 56px; flex-shrink: 0; gap: 12px; }
   .topbar-logo { font-family: var(--font-display); font-size: 24px; color: var(--red); letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
   .topbar-logo span { color: var(--text); }
-  .admin-badge { font-size: 10px; background: rgba(232,22,27,0.15); color: var(--red); border: 1px solid rgba(232,22,27,0.3); border-radius: 4px; padding: 3px 8px; letter-spacing: 1px; font-weight: 700; }
-  .manager-badge { font-size: 10px; background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); border-radius: 4px; padding: 3px 8px; letter-spacing: 1px; font-weight: 700; }
-  .tab-switch { display: flex; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; }
-  .tab-btn { padding: 6px 20px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
+  .admin-badge { font-size: 11px; background: rgba(232,22,27,0.15); color: var(--red); border: 1px solid rgba(232,22,27,0.3); border-radius: 6px; padding: 4px 8px; letter-spacing: 1px; font-weight: 700; }
+  .manager-badge { font-size: 11px; background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; padding: 4px 8px; letter-spacing: 1px; font-weight: 700; }
+  .tab-switch { display: flex; background: var(--surface2); border-radius: 8px; padding: 4px; gap: 4px; }
+  .tab-btn { padding: 8px 20px; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
   .tab-btn.active { background: var(--red); color: #fff; }
-  .topbar-right { display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 5px; box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s infinite; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); justify-content: flex-end;}
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 5px; box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s infinite; }
   @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
   .clock { color: var(--text); }
-  .role-label { font-size: 11px; color: var(--text-muted); font-family: var(--font-body); }
-  .lock-btn { padding: 5px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); font-size: 11px; font-family: var(--font-body); cursor: pointer; font-weight: 600; }
+  .role-label { font-size: 12px; color: var(--text-muted); font-family: var(--font-body); }
+  .lock-btn { padding: 8px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text-muted); font-size: 12px; font-family: var(--font-body); cursor: pointer; font-weight: 600; }
   .lock-btn:hover { border-color: var(--red); color: var(--red); }
 
   .main { display: flex; flex: 1; overflow: hidden; }
@@ -65,94 +65,117 @@
 
   /* Menu panel */
   .menu-panel { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); overflow: hidden; }
-  .menu-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .search-bar { display: flex; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; gap: 8px; margin-bottom: 12px; }
-  .search-bar input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 13px; flex: 1; }
-  .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .menu-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .search-bar { display: flex; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; gap: 10px; margin-bottom: 14px; }
+  .search-bar input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 16px; flex: 1; }
+  .cat-tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
   .cat-tabs::-webkit-scrollbar { display: none; }
-  .cat-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+  .cat-tab { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
   .cat-tab.active { background: var(--red); border-color: var(--red); color: #fff; }
-  .menu-grid { flex: 1; overflow-y: auto; padding: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; align-content: start; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-  .menu-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; transition: all 0.15s; }
+  .menu-grid { flex: 1; overflow-y: auto; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; align-content: start; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .menu-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; cursor: pointer; transition: all 0.15s; }
   .menu-item:hover { border-color: var(--red); background: var(--surface3); }
   .menu-item:active { transform: scale(0.97); }
-  .item-emoji { font-size: 28px; margin-bottom: 8px; line-height: 1; }
-  .item-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
-  .item-price { font-family: var(--font-mono); font-size: 12px; color: var(--red); font-weight: 600; }
+  .item-emoji { font-size: 32px; margin-bottom: 10px; line-height: 1; }
+  .item-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 6px; }
+  .item-price { font-family: var(--font-mono); font-size: 13px; color: var(--red); font-weight: 600; }
 
   /* Order panel */
-  .order-panel { width: 340px; display: flex; flex-direction: column; background: var(--surface); flex-shrink: 0; }
-  .order-header { padding: 14px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .order-title { font-family: var(--font-display); font-size: 20px; color: var(--text); margin-bottom: 10px; letter-spacing: 1px; }
-  .order-type-row { display: flex; gap: 6px; }
-  .order-type-btn { flex: 1; padding: 7px 4px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
+  .order-panel { width: 360px; display: flex; flex-direction: column; background: var(--surface); flex-shrink: 0; }
+  .order-header { padding: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-y: auto; }
+  .order-title { font-family: var(--font-display); font-size: 22px; color: var(--text); margin-bottom: 12px; letter-spacing: 1px; }
+  .order-type-row { display: flex; gap: 8px; }
+  .order-type-btn { flex: 1; padding: 12px 4px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
   .order-type-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
-  .order-source { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-  .order-source-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
-  .source-btns { display: flex; gap: 6px; }
-  .source-btn { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
+  .order-source { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .order-source-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+  .source-btns { display: flex; gap: 8px; }
+  .source-btn { flex: 1; padding: 10px 4px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.12s; }
   .source-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
-  .order-fields { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-  .order-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: var(--font-body); font-size: 12px; color: var(--text); outline: none; width: 100%; }
+  .order-fields { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+  .order-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-family: var(--font-body); font-size: 16px; color: var(--text); outline: none; width: 100%; }
   .order-input:focus { border-color: var(--text-dim); }
-  #cartItems { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; }
-  .cart-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: var(--text-dim); font-size: 13px; height: 100%; opacity: 0.6; }
-  .cart-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; gap: 10px; align-items: flex-start; }
+  #cartItems { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; }
+  .cart-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: var(--text-dim); font-size: 14px; height: 100%; opacity: 0.6; }
+  .cart-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; }
   .cart-item-info { flex: 1; min-width: 0; }
-  .cart-item-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .cart-item-price { font-family: var(--font-mono); font-size: 11px; color: var(--red); }
-  .qty-control { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
-  .qty-btn { width: 24px; height: 24px; border: 1px solid var(--border); background: var(--surface3); color: var(--text); border-radius: 4px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
+  .cart-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3;}
+  .cart-item-price { font-family: var(--font-mono); font-size: 12px; color: var(--red); }
+  .qty-control { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .qty-btn { width: 32px; height: 32px; border: 1px solid var(--border); background: var(--surface3); color: var(--text); border-radius: 6px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
   .qty-btn:hover { background: var(--red); border-color: var(--red); }
-  .order-footer { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-  .totals-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-  .totals-row.grand { font-size: 15px; font-weight: 600; color: var(--red); border-top: 1px solid var(--border); padding-top: 8px; }
-  .order-actions { display: flex; gap: 6px; }
-  .clear-btn { flex: 1; padding: 10px; background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-family: var(--font-body); font-size: 13px; }
+  .order-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+  .totals-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); }
+  .totals-row.grand { font-size: 18px; font-weight: 700; color: var(--red); border-top: 1px solid var(--border); padding-top: 10px; }
+  .order-actions { display: flex; gap: 8px; }
+  .clear-btn { flex: 1; padding: 14px; background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: var(--font-body); font-size: 14px; font-weight: 600;}
   .clear-btn:hover { border-color: var(--text-dim); }
-  .place-btn { flex: 2; padding: 10px; background: var(--red); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: var(--font-body); font-size: 13px; transition: background 0.12s; }
+  .place-btn { flex: 2; padding: 14px; background: var(--red); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: var(--font-body); font-size: 14px; transition: background 0.12s; }
   .place-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .place-btn:not(:disabled):hover { background: var(--red-dark); }
+
+  /* ════════════════════════════════
+     RESPONSIVE POS VIEW (MOBILE)
+  ════════════════════════════════ */
+  @media (max-width: 850px) {
+    #pos-view { flex-direction: column; }
+    .menu-panel { border-right: none; border-bottom: 1px solid var(--border); height: 50%; flex: 1; }
+    .order-panel { width: 100%; height: 50%; flex: 1; }
+    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  }
 
   /* ════════════════════════════════
      DASHBOARD VIEW
   ════════════════════════════════ */
   #dashboard-view { display: none; flex-direction: column; width: 100%; overflow: hidden; }
-  .dash-controls { padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .dash-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
-  .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
-  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-  .stat-val { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
-  .stat-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .kanban-view { display: flex; gap: 10px; padding: 12px 16px; flex: 1; overflow-x: auto; background: var(--black); overflow-y: hidden; }
-  .kanban-col { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; min-width: 280px; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-  .col-header { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-  .col-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
-  .col-count { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--text); margin-top: 3px; }
-  .col-bar { width: 4px; height: 30px; border-radius: 2px; flex-shrink: 0; }
-  .col-content { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-  .col-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; padding: 28px; color: var(--text-dim); font-size: 12px; }
+  .dash-controls { padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .dash-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  .stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .stat-val { font-family: var(--font-mono); font-size: 26px; font-weight: 600; }
+  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  
+  .kanban-view { 
+    display: flex; gap: 16px; padding: 16px; flex: 1; overflow-x: auto; 
+    background: var(--black); overflow-y: hidden; scroll-snap-type: x mandatory; 
+  }
+  .kanban-col { 
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; 
+    min-width: 85vw; max-width: 360px; flex: 1; display: flex; flex-direction: column; overflow: hidden; 
+    scroll-snap-align: start; 
+  }
+  @media (min-width: 851px) {
+    .kanban-view { scroll-snap-type: none; }
+    .kanban-col { min-width: 300px; max-width: none; }
+  }
+
+  .col-header { padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .col-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+  .col-count { font-family: var(--font-mono); font-size: 24px; font-weight: 600; color: var(--text); margin-top: 4px; }
+  .col-bar { width: 5px; height: 34px; border-radius: 3px; flex-shrink: 0; }
+  .col-content { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .col-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; padding: 32px; color: var(--text-dim); font-size: 14px; }
 
   /* Order cards */
-  .order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; animation: fadeUp .2s ease; }
-  .order-card.urgent { border-color: rgba(232,22,27,0.5); box-shadow: 0 0 10px rgba(232,22,27,0.1); }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes bellFlash { 0%,100%{border-color:var(--border)} 50%{border-color:var(--red);box-shadow:0 0 20px rgba(232,22,27,.4)} }
+  .order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; animation: fadeUp .2s ease; }
+  .order-card.urgent { border-color: rgba(232,22,27,0.5); box-shadow: 0 0 12px rgba(232,22,27,0.15); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes bellFlash { 0%,100%{border-color:var(--border)} 50%{border-color:var(--red);box-shadow:0 0 24px rgba(232,22,27,.4)} }
   .order-card.bell { animation: bellFlash .75s ease; }
-  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--surface3); border-bottom: 1px solid var(--border); }
-  .card-id { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--red); }
-  .card-age { font-size: 10px; color: var(--text-muted); }
+  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--surface3); border-bottom: 1px solid var(--border); }
+  .card-id { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--red); }
+  .card-age { font-size: 11px; color: var(--text-muted); }
   .card-age.hot { color: var(--red); font-weight: 700; }
-  .card-body { padding: 10px; }
-  .card-table { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .card-cust { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.6; }
-  .card-items { font-size: 11px; color: var(--text-muted); background: var(--surface3); border-radius: 6px; padding: 7px 9px; margin-bottom: 8px; line-height: 1.8; }
-  .card-note { font-size: 11px; color: var(--yellow); background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); border-radius: 5px; padding: 5px 8px; margin-bottom: 8px; }
-  .card-bottom { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
-  .card-total { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--green); }
-  .badges { display: flex; gap: 4px; flex-wrap: wrap; }
-  .badge { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+  .card-body { padding: 14px; }
+  .card-table { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3;}
+  .card-cust { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+  .card-items { font-size: 13px; color: var(--text-muted); background: var(--surface3); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; line-height: 1.8; }
+  .card-note { font-size: 12px; color: var(--yellow); background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; }
+  .card-bottom { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+  .card-total { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--green); }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge { font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
   .b-branch   { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
   .b-dine     { background: rgba(234,179,8,.15); color: var(--yellow); border: 1px solid rgba(234,179,8,.3); }
   .b-takeaway { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.3); }
@@ -160,17 +183,17 @@
   .b-website  { background: var(--green); color: #fff; }
   .b-counter  { background: var(--blue); color: #fff; }
   .b-waiter   { background: var(--orange); color: #fff; }
-  .card-actions { display: flex; gap: 6px; }
-  .adv-btn { flex: 1; padding: 7px; background: var(--red); color: #fff; border: none; font-size: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; font-family: var(--font-body); }
+  .card-actions { display: flex; gap: 8px; }
+  .adv-btn { flex: 1; padding: 12px; background: var(--red); color: #fff; border: none; font-size: 13px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: var(--font-body); }
   .adv-btn:hover { background: var(--red-dark); }
-  .cxl-btn { padding: 7px 10px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); font-size: 11px; cursor: pointer; font-family: var(--font-body); font-weight: 600; }
+  .cxl-btn { padding: 12px 14px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); font-size: 13px; cursor: pointer; font-family: var(--font-body); font-weight: 600; }
   .cxl-btn:hover { border-color: var(--red); color: var(--red); }
 
   /* Branch lock notice */
-  .branch-lock-notice { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 6px; padding: 6px 12px; font-size: 11px; color: var(--blue); display: flex; align-items: center; gap: 6px; }
+  .branch-lock-notice { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--blue); display: flex; align-items: center; gap: 8px; font-weight: 600; }
 
   /* Toast */
-  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface2); color: var(--text); padding: 12px 22px; border-radius: 8px; border: 1px solid var(--border); transition: transform 0.3s; z-index: 1000; font-size: 13px; white-space: nowrap; }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface2); color: var(--text); padding: 14px 24px; border-radius: 10px; border: 1px solid var(--border); transition: transform 0.3s; z-index: 1000; font-size: 14px; white-space: nowrap; font-weight: 500; }
   #toast.show { transform: translateX(-50%) translateY(0); }
 
   /* Scrollbars */
@@ -231,7 +254,7 @@
     <div class="menu-panel">
       <div class="menu-header">
         <div class="search-bar">
-          <span style="color:var(--text-dim);font-size:16px;">⌕</span>
+          <span style="color:var(--text-dim);font-size:18px;">⌕</span>
           <input type="search" id="searchInput" placeholder="Search items..." autocomplete="off" oninput="renderMenu()">
         </div>
         <div class="cat-tabs" id="catTabs"></div>
@@ -265,7 +288,7 @@
         </div>
       </div>
       <div id="cartItems">
-        <div class="cart-empty"><span style="font-size:30px">🛒</span><span>Cart is empty</span></div>
+        <div class="cart-empty"><span style="font-size:36px">🛒</span><span>Cart is empty</span></div>
       </div>
       <div class="order-footer">
         <div class="totals-row"><span>Subtotal</span><span id="subtotalVal">Rs. 0</span></div>
@@ -283,7 +306,7 @@
     <div class="dash-controls">
       <span class="dash-label">Branch:</span>
       <div id="branchFilterWrap"><!-- injected on login --></div>
-      <button onclick="clearDoneOrders()" style="padding:6px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:11px;cursor:pointer;font-weight:600;font-family:var(--font-body);">🧹 Clear Done</button>
+      <button onclick="clearDoneOrders()" style="padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:13px;cursor:pointer;font-weight:600;font-family:var(--font-body);">🧹 Clear Done</button>
     </div>
     <div class="dash-stats" id="dashStats"></div>
     <div class="kanban-view">
@@ -327,9 +350,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-// ════════════════════════════════════════════════
-// FIREBASE CONFIG
-// ════════════════════════════════════════════════
+// [JS Logic remains entirely intact as it was, no logic removed/changed for full usability.]
 firebase.initializeApp({
   apiKey:            "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
   authDomain:        "crispypizza-aa734.firebaseapp.com",
@@ -339,14 +360,8 @@ firebase.initializeApp({
   appId:             "1:359399692159:web:72fb1804ffa198b229ac4a"
 });
 const db = firebase.firestore();
-
-// Enable offline persistence
 db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
 
-
-// ════════════════════════════════════════════════
-// STATE
-// ════════════════════════════════════════════════
 let currentUser    = null;
 let cart           =[];
 let orderType      = 'dine-in';
@@ -354,87 +369,53 @@ let orderSource    = 'Counter';
 let orders         =[];
 let seenIds        = new Set();
 let firestoreUnsub = null;
-
 let MENU           = [];
 let CATS           = ['All'];
 let activeCategory = 'All';
 
-// ════════════════════════════════════════════════
-// CLOCK
-// ════════════════════════════════════════════════
-function tickClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-PK', { hour12: false });
-}
-tickClock();
-setInterval(tickClock, 1000);
+function tickClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-PK', { hour12: false }); }
+tickClock(); setInterval(tickClock, 1000);
 
-// ════════════════════════════════════════════════
-// VIEW SWITCHING
-// ════════════════════════════════════════════════
 function switchView(v) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) =>
-    b.classList.toggle('active', (v === 'pos' && i === 0) || (v === 'dashboard' && i === 1))
-  );
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', (v === 'pos' && i === 0) || (v === 'dashboard' && i === 1)));
   document.getElementById('pos-view').style.display       = v === 'pos'       ? 'flex' : 'none';
   document.getElementById('dashboard-view').style.display = v === 'dashboard' ? 'flex' : 'none';
   if (v === 'dashboard') renderDashboard();
 }
 
-// ════════════════════════════════════════════════
-// PIN LOGIC
-// ════════════════════════════════════════════════
 let pinBuf = '';
 function pp(d) { if (pinBuf.length >= 4) return; pinBuf += d; updPin(); if (pinBuf.length === 4) setTimeout(ps, 160); }
 function pd() { pinBuf = pinBuf.slice(0, -1); updPin(); }
-function updPin() {
-  document.getElementById('pinDisplay').textContent = '●'.repeat(pinBuf.length) + '─'.repeat(4 - pinBuf.length);
-}
+function updPin() { document.getElementById('pinDisplay').textContent = '●'.repeat(pinBuf.length) + '─'.repeat(4 - pinBuf.length); }
 
-// Authenticate Admin/Manager from Firebase
 async function ps() {
   if (pinBuf.length !== 4) return;
-  
   try {
     const doc = await db.collection('users').doc(pinBuf).get();
     const data = doc.data();
-    
     if (doc.exists && (data.role === 'superadmin' || data.role === 'manager')) {
       currentUser = { ...data, pin: pinBuf };
       document.getElementById('pin-screen').classList.add('hidden');
       document.getElementById('pinErr').textContent = '';
-      
-      onLogin(); 
-      loadMenuFromFirebase(); 
-    } else {
-      showPinError();
-    }
-  } catch(e) {
-    console.error("Auth Error", e);
-    showPinError();
-  }
+      onLogin(); loadMenuFromFirebase(); 
+    } else { showPinError(); }
+  } catch(e) { console.error("Auth Error", e); showPinError(); }
 }
 
 function showPinError() {
   const errEl = document.getElementById('pinErr');
   errEl.textContent = '✗ Wrong PIN — try again';
-  errEl.style.animation = 'none';
-  errEl.offsetHeight;
-  errEl.style.animation = '';
-  pinBuf = '';
-  updPin();
+  errEl.style.animation = 'none'; errEl.offsetHeight; errEl.style.animation = '';
+  pinBuf = ''; updPin();
 }
 
 function lockScreen() {
-  pinBuf = ''; updPin();
-  currentUser = null;
+  pinBuf = ''; updPin(); currentUser = null;
   document.getElementById('pinErr').textContent = '';
   document.getElementById('pin-screen').classList.remove('hidden');
-  stopFirebaseListener();
-  cart =[];
-  renderCart();
+  stopFirebaseListener(); cart =[]; renderCart();
 }
 
-// Keyboard support for PIN
 document.addEventListener('keydown', e => {
   if (document.getElementById('pin-screen').classList.contains('hidden')) return;
   if (e.key >= '0' && e.key <= '9') pp(e.key);
@@ -442,123 +423,68 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Enter') ps();
 });
 
-// ════════════════════════════════════════════════
-// ON LOGIN & LOAD MENU
-// ════════════════════════════════════════════════
 function onLogin() {
-  const u            = currentUser;
-  const isSuperAdmin = u.role === 'superadmin';
-
-  // Topbar badge
+  const u = currentUser; const isSuperAdmin = u.role === 'superadmin';
   const badge = document.getElementById('roleBadge');
   badge.textContent = isSuperAdmin ? 'SUPERADMIN' : 'MANAGER';
   badge.className   = isSuperAdmin ? 'admin-badge' : 'manager-badge';
   document.getElementById('roleLabel').textContent = u.name;
 
-  // POS branch selector
   const bfw = document.getElementById('branchFieldWrap');
   if (isSuperAdmin) {
     bfw.innerHTML = `<select id="posBranch" class="order-input" style="font-weight:bold;">
-      <option value="Gamber Branch">Gamber Branch</option>
-      <option value="Sahiwal Branch">Sahiwal Branch</option>
-      <option value="Noor Park Branch">Noor Park Branch</option>
+      <option value="Gamber Branch">Gamber Branch</option><option value="Sahiwal Branch">Sahiwal Branch</option><option value="Noor Park Branch">Noor Park Branch</option>
     </select>`;
-  } else {
-    bfw.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch}</div>`;
-  }
+  } else { bfw.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch}</div>`; }
 
-  // Dashboard branch filter
   const bfr = document.getElementById('branchFilterWrap');
   if (isSuperAdmin) {
     bfr.innerHTML = `<select id="dashBranchFilter" class="order-input" style="width:200px;" onchange="renderDashboard()">
-      <option value="All">All Branches</option>
-      <option value="Gamber Branch">Gamber Branch</option>
-      <option value="Sahiwal Branch">Sahiwal Branch</option>
-      <option value="Noor Park Branch">Noor Park Branch</option>
+      <option value="All">All Branches</option><option value="Gamber Branch">Gamber Branch</option><option value="Sahiwal Branch">Sahiwal Branch</option><option value="Noor Park Branch">Noor Park Branch</option>
     </select>`;
-  } else {
-    bfr.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch} — Your Branch</div>`;
-  }
+  } else { bfr.innerHTML = `<div class="branch-lock-notice">🏪 ${u.branch} — Your Branch</div>`; }
 
-  showToast('Loading Menu...');
-  startFirebaseListener();
+  showToast('Loading Menu...'); startFirebaseListener();
 }
 
 async function loadMenuFromFirebase() {
   try {
     const snap = await db.collection('menu').get();
-    MENU = snap.docs.map(doc => doc.data());
-    // Sort menu so items show in a consistent order
-    MENU.sort((a, b) => a.id - b.id); 
-    
+    MENU = snap.docs.map(doc => doc.data()); MENU.sort((a, b) => a.id - b.id); 
     CATS =['All', ...new Set(MENU.map(i => i.cat))];
-    renderCatTabs();
-    renderMenu();
-    showToast('✅ Ready!');
-  } catch(e) {
-    console.error("Menu load error:", e);
-    showToast('⚠️ Failed to load menu.');
-  }
+    renderCatTabs(); renderMenu(); showToast('✅ Ready!');
+  } catch(e) { console.error("Menu load error:", e); showToast('⚠️ Failed to load menu.'); }
 }
 
-// ════════════════════════════════════════════════
-// MENU RENDER
-// ════════════════════════════════════════════════
-function renderCatTabs() {
-  document.getElementById('catTabs').innerHTML = CATS.map(c =>
-    `<button class="cat-tab ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
-  ).join('');
-}
+function renderCatTabs() { document.getElementById('catTabs').innerHTML = CATS.map(c => `<button class="cat-tab ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`).join(''); }
 function setCategory(c) { activeCategory = c; renderCatTabs(); renderMenu(); }
 function renderMenu() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  document.getElementById('menuGrid').innerHTML = MENU
-    .filter(i => (activeCategory === 'All' || i.cat === activeCategory) && i.name.toLowerCase().includes(q))
-    .map(i => `<div class="menu-item" onclick="addToCart(${i.id})">
-      <div class="item-emoji">${i.emoji}</div>
-      <div class="item-name">${i.name}</div>
-      <div class="item-price">Rs. ${i.price.toLocaleString()}</div>
-    </div>`).join('');
+  document.getElementById('menuGrid').innerHTML = MENU.filter(i => (activeCategory === 'All' || i.cat === activeCategory) && i.name.toLowerCase().includes(q))
+    .map(i => `<div class="menu-item" onclick="addToCart(${i.id})"><div class="item-emoji">${i.emoji}</div><div class="item-name">${i.name}</div><div class="item-price">Rs. ${i.price.toLocaleString()}</div></div>`).join('');
 }
 
-// ════════════════════════════════════════════════
-// CART
-// ════════════════════════════════════════════════
 function addToCart(id) {
-  const item = MENU.find(i => i.id === id);
-  if (!item) return;
+  const item = MENU.find(i => i.id === id); if (!item) return;
   const ex = cart.find(c => c.id === id);
   if (ex) ex.qty++; else cart.push({ ...item, qty: 1 });
-  renderCart();
-  showToast(`${item.emoji} ${item.name} added`);
+  renderCart(); showToast(`${item.emoji} ${item.name} added`);
 }
 function changeQty(id, d) {
-  const idx = cart.findIndex(c => c.id === id);
-  if (idx === -1) return;
-  cart[idx].qty += d;
-  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  const idx = cart.findIndex(c => c.id === id); if (idx === -1) return;
+  cart[idx].qty += d; if (cart[idx].qty <= 0) cart.splice(idx, 1);
   renderCart();
 }
 function renderCart() {
   const el = document.getElementById('cartItems');
   if (!cart.length) {
-    el.innerHTML = '<div class="cart-empty"><span style="font-size:30px">🛒</span><span>Cart is empty</span></div>';
-    document.getElementById('placeBtn').disabled = true;
-    document.getElementById('subtotalVal').textContent = 'Rs. 0';
-    document.getElementById('grandTotal').textContent  = 'Rs. 0';
-    return;
+    el.innerHTML = '<div class="cart-empty"><span style="font-size:36px">🛒</span><span>Cart is empty</span></div>';
+    document.getElementById('placeBtn').disabled = true; document.getElementById('subtotalVal').textContent = 'Rs. 0'; document.getElementById('grandTotal').textContent = 'Rs. 0'; return;
   }
   el.innerHTML = cart.map(i => `
     <div class="cart-item">
-      <div class="cart-item-info">
-        <div class="cart-item-name">${i.name}</div>
-        <div class="cart-item-price">Rs. ${(i.price * i.qty).toLocaleString()}</div>
-      </div>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
-        <span style="min-width:22px;text-align:center;font-family:var(--font-mono);font-size:13px;font-weight:600;">${i.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
-      </div>
+      <div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-price">Rs. ${(i.price * i.qty).toLocaleString()}</div></div>
+      <div class="qty-control"><button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button><span style="min-width:24px;text-align:center;font-family:var(--font-mono);font-size:15px;font-weight:600;">${i.qty}</span><button class="qty-btn" onclick="changeQty(${i.id},1)">+</button></div>
     </div>`).join('');
   const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
   document.getElementById('subtotalVal').textContent = `Rs. ${sub.toLocaleString()}`;
@@ -566,190 +492,85 @@ function renderCart() {
   document.getElementById('placeBtn').disabled = false;
 }
 function clearCart() {
-  cart = [];['custName', 'custPhone', 'tableNum', 'orderNote'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  // Reset type + source buttons
+  cart = [];['custName', 'custPhone', 'tableNum', 'orderNote'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.querySelectorAll('.order-type-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
   document.querySelectorAll('.source-btn').forEach((b, i)      => b.classList.toggle('active', i === 0));
-  orderType   = 'dine-in';
-  orderSource = 'Counter';
-  renderCart();
+  orderType = 'dine-in'; orderSource = 'Counter'; renderCart();
 }
 function setType(t, el)   { orderType   = t; document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
 function setSource(s, el) { orderSource = s; document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));   el.classList.add('active'); }
 
-// ════════════════════════════════════════════════
-// GET CURRENT BRANCH (for POS)
-// ════════════════════════════════════════════════
 function getPosBranch() {
-  if (currentUser.role === 'superadmin') {
-    const el = document.getElementById('posBranch');
-    return el ? el.value : 'Gamber Branch';
-  }
+  if (currentUser.role === 'superadmin') { const el = document.getElementById('posBranch'); return el ? el.value : 'Gamber Branch'; }
   return currentUser.branch;
 }
 
-// ════════════════════════════════════════════════
-// PLACE ORDER
-// ════════════════════════════════════════════════
 async function placeOrder() {
   if (!cart.length || !currentUser) return;
-  const btn = document.getElementById('placeBtn');
-  btn.disabled    = true;
-  btn.textContent = 'Placing...';
-  
-  const branch = getPosBranch();
-  const localId = `P${Math.floor(1000 + Math.random() * 9000)}`;
-
+  const btn = document.getElementById('placeBtn'); btn.disabled = true; btn.textContent = 'Placing...';
+  const branch = getPosBranch(); const localId = `P${Math.floor(1000 + Math.random() * 9000)}`;
   try {
-    // We don't await here to prevent the UI from freezing if offline
     db.collection('orders').add({
-      localId,
-      branch,
-      items:         cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
-      type:          orderType,
-      source:        orderSource,
-      customer:      document.getElementById('custName').value.trim()  || 'Walk-in',
-      phone:         document.getElementById('custPhone').value.trim() || '',
-      address:       document.getElementById('tableNum').value.trim()  || '',
-      note:          document.getElementById('orderNote').value.trim() || '',
-      total:         cart.reduce((s, i) => s + i.price * i.qty, 0),
-      status:        'new',
-      placedBy:      'admin',
-      placedByName:  currentUser.name,
-      timestamp:     firebase.firestore.FieldValue.serverTimestamp(),
+      localId, branch,
+      items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+      type: orderType, source: orderSource,
+      customer: document.getElementById('custName').value.trim() || 'Walk-in', phone: document.getElementById('custPhone').value.trim() || '',
+      address: document.getElementById('tableNum').value.trim() || '', note: document.getElementById('orderNote').value.trim() || '',
+      total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+      status: 'new', placedBy: 'admin', placedByName: currentUser.name, timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
-    showToast(`✅ Order placed at ${branch}!`);
-    clearCart();
-  } catch (e) {
-    console.error('Place order error:', e);
-    showToast('❌ Failed — check connection');
-  }
-  
-  btn.disabled    = false;
-  btn.textContent = 'Place Order';
+    showToast(`✅ Order placed at ${branch}!`); clearCart();
+  } catch (e) { console.error('Place order error:', e); showToast('❌ Failed — check connection'); }
+  btn.disabled = false; btn.textContent = 'Place Order';
 }
 
-// ════════════════════════════════════════════════
-// FIREBASE LIVE LISTENER
-// Sorted LOCALLY to prevent missing Index bugs.
-// ════════════════════════════════════════════════
 function startFirebaseListener() {
   if (firestoreUnsub) return;
-
-  let query = db.collection('orders');
-  if (currentUser.role === 'manager') {
-    query = query.where('branch', '==', currentUser.branch);
-  }
-
-  firestoreUnsub = query.onSnapshot(
-    snap => {
-      const startOfDay = new Date();
-      if (startOfDay.getHours() < 4) startOfDay.setDate(startOfDay.getDate() - 1);
-      startOfDay.setHours(4, 0, 0, 0);
-
-      let incoming = snap.docs.map(doc => {
-        const data = doc.data();
-        return {
-          firebaseId: doc.id,
-          ...data,
-          time: data.timestamp ? data.timestamp.toDate() : new Date(),
-        };
-      });
-
-      // 1. Filter for today locally
-      incoming = incoming.filter(o => o.time >= startOfDay);
-
-      // 2. Sort locally by newest first
-      incoming.sort((a, b) => b.time - a.time);
-
-      // New order alert
+  let query = db.collection('orders'); if (currentUser.role === 'manager') query = query.where('branch', '==', currentUser.branch);
+  firestoreUnsub = query.onSnapshot(snap => {
+      const startOfDay = new Date(); if (startOfDay.getHours() < 4) startOfDay.setDate(startOfDay.getDate() - 1); startOfDay.setHours(4, 0, 0, 0);
+      let incoming = snap.docs.map(doc => { const data = doc.data(); return { firebaseId: doc.id, ...data, time: data.timestamp ? data.timestamp.toDate() : new Date() }; });
+      incoming = incoming.filter(o => o.time >= startOfDay); incoming.sort((a, b) => b.time - a.time);
       if (seenIds.size > 0) {
         incoming.forEach(o => {
           if (!seenIds.has(o.firebaseId) && o.status === 'new') {
-            const src = o.placedBy === 'waiter' 
-              ? `🧑‍🍳 ${o.waiterName || 'Waiter'}` 
-              : o.source === 'Website' || o.placedBy === 'website' 
-                ? '🌐 Website' 
-                : '📞 Phone/Counter';
-            playAlert();
-            showToast(`🔔 New order from ${src} — ${o.customer || 'Guest'}`);
-            setTimeout(() => {
-              const c = document.getElementById('card-' + o.firebaseId);
-              if (c) c.classList.add('bell');
-            }, 300);
+            const src = o.placedBy === 'waiter' ? `🧑‍🍳 ${o.waiterName || 'Waiter'}` : o.source === 'Website' || o.placedBy === 'website' ? '🌐 Website' : '📞 Phone/Counter';
+            playAlert(); showToast(`🔔 New order from ${src} — ${o.customer || 'Guest'}`);
+            setTimeout(() => { const c = document.getElementById('card-' + o.firebaseId); if (c) c.classList.add('bell'); }, 300);
           }
         });
       }
-
-      seenIds  = new Set(incoming.map(o => o.firebaseId));
-      orders   = incoming;
-
-      if (document.getElementById('dashboard-view').style.display === 'flex') {
-        renderDashboard();
-      }
-    },
-    err => {
-      console.error('Firestore listener error:', err);
-      showToast('⚠️ Listener error — check console');
-    }
+      seenIds = new Set(incoming.map(o => o.firebaseId)); orders = incoming;
+      if (document.getElementById('dashboard-view').style.display === 'flex') renderDashboard();
+    }, err => { console.error('Firestore listener error:', err); showToast('⚠️ Listener error — check console'); }
   );
 }
 
-function stopFirebaseListener() {
-  if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; }
-  orders  =[];
-  seenIds = new Set();
-}
+function stopFirebaseListener() { if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; } orders =[]; seenIds = new Set(); }
 
-// ════════════════════════════════════════════════
-// ADVANCE / CANCEL ORDERS
-// ════════════════════════════════════════════════
 async function advanceOrder(fid) {
-  const o = orders.find(x => x.firebaseId === fid);
-  if (!o) return;
-  const seq  =['new', 'preparing', 'ready', 'done'];
-  const next = seq[seq.indexOf(o.status) + 1];
-  if (next) {
-    db.collection('orders').doc(fid).update({ status: next }).catch(console.error);
-  }
+  const o = orders.find(x => x.firebaseId === fid); if (!o) return;
+  const seq =['new', 'preparing', 'ready', 'done']; const next = seq[seq.indexOf(o.status) + 1];
+  if (next) db.collection('orders').doc(fid).update({ status: next }).catch(console.error);
 }
 
-async function cancelOrder(fid) {
-  if (!confirm('Cancel this order?')) return;
-  db.collection('orders').doc(fid).delete().catch(console.error);
-}
+async function cancelOrder(fid) { if (!confirm('Cancel this order?')) return; db.collection('orders').doc(fid).delete().catch(console.error); }
 
 async function clearDoneOrders() {
-  const done = orders.filter(o => o.status === 'done');
-  if (!done.length) { showToast('No completed orders to clear'); return; }
-  const batch = db.batch();
-  done.forEach(o => batch.delete(db.collection('orders').doc(o.firebaseId)));
-  
-  await batch.commit().catch(e => {
-    console.error("Batch delete failed:", e);
-    showToast("⚠️ Could not clear all orders");
-  });
-  
+  const done = orders.filter(o => o.status === 'done'); if (!done.length) { showToast('No completed orders to clear'); return; }
+  const batch = db.batch(); done.forEach(o => batch.delete(db.collection('orders').doc(o.firebaseId)));
+  await batch.commit().catch(e => { console.error("Batch delete failed:", e); showToast("⚠️ Could not clear all orders"); });
   showToast(`🧹 Cleared ${done.length} completed order${done.length > 1 ? 's' : ''}`);
 }
 
-// ════════════════════════════════════════════════
-// RENDER DASHBOARD
-// ════════════════════════════════════════════════
 function getDashBranchFilter() {
   if (currentUser.role === 'manager') return currentUser.branch;
-  const el = document.getElementById('dashBranchFilter');
-  return el ? el.value : 'All';
+  const el = document.getElementById('dashBranchFilter'); return el ? el.value : 'All';
 }
 
 function renderDashboard() {
-  const fb  = getDashBranchFilter();
-  const f   = fb === 'All' ? orders : orders.filter(o => (o.branch || 'Gamber Branch') === fb);
+  const fb = getDashBranchFilter(); const f = fb === 'All' ? orders : orders.filter(o => (o.branch || 'Gamber Branch') === fb);
   const rev = f.filter(o => o.status === 'done').reduce((s, o) => s + (o.total || 0), 0);
-
   document.getElementById('dashStats').innerHTML = `
     <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val" style="color:var(--red)">${f.length}</div><div class="stat-sub">Today's shift</div></div>
     <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val" style="color:var(--green)">Rs.${rev.toLocaleString()}</div><div class="stat-sub">Completed only</div></div>
@@ -757,37 +578,19 @@ function renderDashboard() {
     <div class="stat-card"><div class="stat-label">Waiter Orders</div><div class="stat-val" style="color:var(--orange)">${f.filter(o => o.placedBy === 'waiter').length}</div><div class="stat-sub">From staff</div></div>
     <div class="stat-card"><div class="stat-label">Online Orders</div><div class="stat-val" style="color:var(--blue)">${f.filter(o => o.source === 'Website' || o.placedBy === 'website').length}</div><div class="stat-sub">Website / Phone</div></div>
   `;
-
-  const cols    =['new',  'preparing', 'ready', 'done'];
-  const colIds  =['new',  'prep',      'ready', 'done'];
-  const btnLabels = ['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', ''];
-  const now     = Date.now();
-
+  const cols =['new', 'preparing', 'ready', 'done']; const colIds =['new', 'prep', 'ready', 'done']; const btnLabels =['▶ Start Prep', '✓ Mark Ready', '🎉 Mark Done', '']; const now = Date.now();
   cols.forEach((status, i) => {
-    const co    = f.filter(o => o.status === status);
-    document.getElementById(`cnt-${colIds[i]}`).textContent = co.length;
+    const co = f.filter(o => o.status === status); document.getElementById(`cnt-${colIds[i]}`).textContent = co.length;
     const el = document.getElementById(`col-${colIds[i]}`);
-    if (!co.length) {
-      el.innerHTML = '<div class="col-empty"><span style="font-size:22px;opacity:.2">◌</span><span>No orders</span></div>';
-      return;
-    }
+    if (!co.length) { el.innerHTML = '<div class="col-empty"><span style="font-size:28px;opacity:.2">◌</span><span>No orders</span></div>'; return; }
     el.innerHTML = co.map(o => {
-      const age  = Math.floor((now - o.time) / 60000);
-      const hot  = age >= 15 && status !== 'done';
-      const src  = o.placedBy === 'waiter' ? 'b-waiter'
-                 : (o.source === 'Website' || o.placedBy === 'website') ? 'b-website'
-                 : 'b-counter';
-      const srcLbl = o.placedBy === 'waiter' ? (o.waiterName || 'Waiter')
-                   : (o.source || 'Counter');
-      const typ  = o.type === 'delivery' ? 'b-delivery' : o.type === 'takeaway' ? 'b-takeaway' : 'b-dine';
-      const tableLabel = o.address
-        ? (o.type === 'delivery' ? `🛵 ${o.address}` : o.address)
-        : (o.type === 'delivery' ? '🛵 Delivery' : o.type === 'takeaway' ? '🥡 Takeaway' : (o.table ? 'Table ' + o.table : 'Walk-in'));
+      const age = Math.floor((now - o.time) / 60000); const hot = age >= 15 && status !== 'done';
+      const src = o.placedBy === 'waiter' ? 'b-waiter' : (o.source === 'Website' || o.placedBy === 'website') ? 'b-website' : 'b-counter';
+      const srcLbl = o.placedBy === 'waiter' ? (o.waiterName || 'Waiter') : (o.source || 'Counter');
+      const typ = o.type === 'delivery' ? 'b-delivery' : o.type === 'takeaway' ? 'b-takeaway' : 'b-dine';
+      const tableLabel = o.address ? (o.type === 'delivery' ? `🛵 ${o.address}` : o.address) : (o.type === 'delivery' ? '🛵 Delivery' : o.type === 'takeaway' ? '🥡 Takeaway' : (o.table ? 'Table ' + o.table : 'Walk-in'));
       return `<div class="order-card ${hot ? 'urgent' : ''}" id="card-${o.firebaseId}">
-        <div class="card-head">
-          <span class="card-id">#${o.localId || o.firebaseId.slice(0, 6)}</span>
-          <span class="card-age ${hot ? 'hot' : ''}">${age < 1 ? 'Just now' : age + 'm ago'}${hot ? ' ⚠️' : ''}</span>
-        </div>
+        <div class="card-head"><span class="card-id">#${o.localId || o.firebaseId.slice(0, 6)}</span><span class="card-age ${hot ? 'hot' : ''}">${age < 1 ? 'Just now' : age + 'm ago'}${hot ? ' ⚠️' : ''}</span></div>
         <div class="card-body">
           <div class="card-table">${tableLabel}</div>
           <div class="card-cust">${o.customer || 'Walk-in'}${o.phone ? '<br>📞 ' + o.phone : ''}</div>
@@ -795,11 +598,7 @@ function renderDashboard() {
           ${o.note ? `<div class="card-note">💬 ${o.note}</div>` : ''}
           <div class="card-bottom">
             <span class="card-total">Rs. ${(o.total || 0).toLocaleString()}</span>
-            <div class="badges">
-              <span class="badge b-branch">${o.branch || 'Main'}</span>
-              <span class="badge ${typ}">${o.type || 'dine-in'}</span>
-              <span class="badge ${src}">${srcLbl}</span>
-            </div>
+            <div class="badges"><span class="badge b-branch">${o.branch || 'Main'}</span><span class="badge ${typ}">${o.type || 'dine-in'}</span><span class="badge ${src}">${srcLbl}</span></div>
           </div>
           <div class="card-actions">
             ${btnLabels[i] ? `<button class="adv-btn" onclick="advanceOrder('${o.firebaseId}')">${btnLabels[i]}</button>` : ''}
@@ -811,44 +610,24 @@ function renderDashboard() {
   });
 }
 
-// ════════════════════════════════════════════════
-// ALERT BEEP
-// ════════════════════════════════════════════════
 function playAlert() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();[0, 200, 400].forEach(delay => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.type = 'sine'; o.frequency.value = 880;
-      const t = ctx.currentTime + delay / 1000;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.32, t + 0.01);
-      g.gain.linearRampToValueAtTime(0, t + 0.13);
-      o.start(t); o.stop(t + 0.16);
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine'; o.frequency.value = 880; const t = ctx.currentTime + delay / 1000;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.32, t + 0.01);
+      g.gain.linearRampToValueAtTime(0, t + 0.13); o.start(t); o.stop(t + 0.16);
     });
   } catch (e) {}
 }
 
-// ════════════════════════════════════════════════
-// TOAST
-// ════════════════════════════════════════════════
 let toastTimer = null;
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
-// Refresh dashboard time labels every 30 seconds
-setInterval(() => {
-  if (document.getElementById('dashboard-view').style.display === 'flex') renderDashboard();
-}, 30000);
-
+setInterval(() => { if (document.getElementById('dashboard-view').style.display === 'flex') renderDashboard(); }, 30000);
 </script>
 </body>
 </html>
