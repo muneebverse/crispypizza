@@ -157,8 +157,7 @@
   .col-content { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .col-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; padding: 32px; color: var(--text-dim); font-size: 14px; }
 
-  /* Order cards */
-  .order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; animation: fadeUp .2s ease; }
+  /* Order cards */.order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; animation: fadeUp .2s ease; flex-shrink: 0; }
   .order-card.urgent { border-color: rgba(232,22,27,0.5); box-shadow: 0 0 12px rgba(232,22,27,0.15); }
   @keyframes fadeUp { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
   @keyframes bellFlash { 0%,100%{border-color:var(--border)} 50%{border-color:var(--red);box-shadow:0 0 24px rgba(232,22,27,.4)} }
