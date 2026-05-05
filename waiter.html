@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Crispy Pizza — Waiter Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -23,7 +23,7 @@
   #pin-screen {
     position: fixed; inset: 0; background: var(--black); z-index: 999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s; overflow-y: auto; padding: 20px;
   }
   #pin-screen.hidden { display: none; }
   .pin-bg {
@@ -31,218 +31,224 @@
     background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(232,22,27,0.12) 0%, transparent 65%);
     pointer-events: none;
   }
-  .pin-logo { font-family: var(--font-display); font-size: 44px; color: var(--red); letter-spacing: 4px; position: relative; }
+  .pin-logo { font-family: var(--font-display); font-size: 44px; color: var(--red); letter-spacing: 4px; position: relative; margin-top: auto; }
   .pin-logo span { color: var(--text); }
-  .pin-tagline { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 36px; position: relative; }
-  .pin-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; width: 290px; text-align: center; position: relative; }
-  .pin-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
-  .pin-hint { font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+  .pin-tagline { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin: 4px 0 32px; position: relative; text-align: center; }
+  .pin-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 340px; text-align: center; position: relative; margin-bottom: auto; }
+  .pin-title { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; margin-bottom: 4px; }
+  .pin-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
   .pin-display {
-    background: var(--black); border: 1px solid var(--border); border-radius: 8px;
-    padding: 12px; font-family: var(--font-mono); font-size: 26px; letter-spacing: 12px;
-    color: var(--orange); margin-bottom: 16px; height: 56px;
+    background: var(--black); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px; font-family: var(--font-mono); font-size: 28px; letter-spacing: 12px;
+    color: var(--orange); margin-bottom: 24px; height: 60px;
     display: flex; align-items: center; justify-content: center;
   }
-  .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .pin-grid { display: grid; grid-template-columns: repeat(3, 70px); justify-content: center; gap: 16px; margin-bottom: 12px; }
   .pin-btn {
-    padding: 16px 10px; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text); font-size: 20px; font-family: var(--font-mono);
+    width: 70px; height: 70px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 50%; color: var(--text); font-size: 24px; font-family: var(--font-mono);
     cursor: pointer; transition: all 0.12s; user-select: none; touch-action: manipulation;
+    display: flex; align-items: center; justify-content: center; padding: 0;
   }
-  .pin-btn:active { background: var(--orange); border-color: var(--orange); color: #fff; transform: scale(0.94); }
-  .pin-del { color: var(--text-muted); font-size: 17px; }
+  .pin-btn:active { background: var(--orange); border-color: var(--orange); color: #fff; transform: scale(0.92); }
+  .pin-del { color: var(--text-muted); font-size: 22px; }
   .pin-ok { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 700; }
   .pin-ok:active { background: #c25a0a; }
-  .pin-error { color: var(--red); font-size: 12px; min-height: 18px; margin-top: 4px; animation: shake 0.3s ease; }
+  .pin-error { color: var(--red); font-size: 13px; min-height: 18px; margin-top: 12px; animation: shake 0.3s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 
   /* ── TOPBAR ── */
   .topbar {
     background: var(--surface); border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 16px; height: 50px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    padding: 10px 16px; min-height: 56px; flex-shrink: 0; gap: 8px;
   }
   .topbar-logo { font-family: var(--font-display); font-size: 22px; color: var(--red); letter-spacing: 2px; display: flex; align-items: center; gap: 6px; }
   .topbar-logo span { color: var(--text); }
   .waiter-badge {
-    font-size: 9px; background: rgba(249,115,22,0.15); color: var(--orange);
+    font-size: 10px; background: rgba(249,115,22,0.15); color: var(--orange);
     border: 1px solid rgba(249,115,22,0.35); border-radius: 4px; padding: 3px 7px;
     letter-spacing: 1px; font-family: var(--font-body); font-weight: 700;
   }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s infinite; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse-dot 2s infinite; }
   @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .waiter-info { font-size: 11px; color: var(--text-muted); }
+  .waiter-info { font-size: 12px; color: var(--text-muted); }
   .lock-btn {
-    padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 6px; color: var(--text-muted); font-size: 11px; cursor: pointer; font-weight: 600;
+    padding: 8px 14px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-muted); font-size: 12px; cursor: pointer; font-weight: 600;
     font-family: var(--font-body);
   }
   .lock-btn:active { border-color: var(--orange); color: var(--orange); }
 
   /* ── BOTTOM NAV ── */
-  .bottom-nav { display: flex; background: var(--surface); border-top: 1px solid var(--border); flex-shrink: 0; height: 58px; }
+  .bottom-nav { 
+    display: flex; background: var(--surface); border-top: 1px solid var(--border); 
+    flex-shrink: 0; height: calc(64px + env(safe-area-inset-bottom)); 
+    padding-bottom: env(safe-area-inset-bottom);
+  }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; border: none; background: transparent; color: var(--text-muted); font-size: 10px;
+    gap: 4px; border: none; background: transparent; color: var(--text-muted); font-size: 11px;
     font-weight: 600; cursor: pointer; font-family: var(--font-body); position: relative;
-    touch-action: manipulation;
+    touch-action: manipulation; padding: 8px 0;
   }
   .nav-btn.active { color: var(--orange); }
-  .nav-icon { font-size: 20px; line-height: 1; }
+  .nav-icon { font-size: 22px; line-height: 1; }
   .cart-badge {
-    position: absolute; top: 6px; right: calc(50% - 22px);
-    background: var(--red); color: #fff; font-size: 9px; font-weight: 700;
-    border-radius: 10px; min-width: 16px; height: 16px;
-    display: none; align-items: center; justify-content: center; padding: 0 4px;
+    position: absolute; top: 6px; right: calc(50% - 24px);
+    background: var(--red); color: #fff; font-size: 10px; font-weight: 700;
+    border-radius: 12px; min-width: 18px; height: 18px;
+    display: none; align-items: center; justify-content: center; padding: 0 5px;
   }
   .cart-badge.show { display: flex; }
 
   /* ── MAIN ── */
   .main { flex: 1; overflow: hidden; position: relative; }
-  .view { position: absolute; inset: 0; overflow-y: auto; display: none; -webkit-overflow-scrolling: touch; }
+  .view { position: absolute; inset: 0; overflow-y: auto; display: none; -webkit-overflow-scrolling: touch; padding-bottom: 20px; }
   .view.active { display: block; }
 
   /* ── MENU VIEW ── */
   .menu-header {
-    padding: 12px 14px 10px; background: var(--surface);
+    padding: 16px 16px 12px; background: var(--surface);
     border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
   }
   .search-wrap {
     display: flex; align-items: center; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; gap: 8px; margin-bottom: 10px;
+    border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; gap: 10px; margin-bottom: 12px;
   }
-  .search-wrap input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 14px; flex: 1; }
-  .cat-strip { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .search-wrap input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 16px; flex: 1; }
+  .cat-strip { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
   .cat-strip::-webkit-scrollbar { display: none; }
   .cat-chip {
-    padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border);
-    background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 500;
+    padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 600;
     cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font-body);
     user-select: none; touch-action: manipulation;
   }
   .cat-chip.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-  .menu-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .menu-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
   .menu-row {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; display: flex; align-items: center; gap: 14px;
     cursor: pointer; transition: all 0.12s; user-select: none; touch-action: manipulation;
   }
   .menu-row:active { border-color: var(--orange); background: var(--surface3); }
-  .row-emoji { font-size: 26px; flex-shrink: 0; line-height: 1; }
+  .row-emoji { font-size: 28px; flex-shrink: 0; line-height: 1; }
   .row-info { flex: 1; min-width: 0; }
-  .row-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .row-price { font-family: var(--font-mono); font-size: 12px; color: var(--orange); }
+  .row-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+  .row-price { font-family: var(--font-mono); font-size: 13px; color: var(--orange); }
   .row-add {
-    width: 32px; height: 32px; background: var(--orange); border: none; border-radius: 8px;
-    color: #fff; font-size: 22px; cursor: pointer; display: flex; align-items: center;
+    width: 38px; height: 38px; background: var(--orange); border: none; border-radius: 10px;
+    color: #fff; font-size: 24px; cursor: pointer; display: flex; align-items: center;
     justify-content: center; flex-shrink: 0; line-height: 1; touch-action: manipulation;
   }
   .row-add:active { background: #c25a0a; transform: scale(0.90); }
-  .row-qty-control { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .row-qty-control { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .row-qty-btn {
-    width: 30px; height: 30px; border: 1px solid var(--border); background: var(--surface3);
-    color: var(--text); border-radius: 6px; cursor: pointer; font-size: 18px;
+    width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface3);
+    color: var(--text); border-radius: 8px; cursor: pointer; font-size: 20px;
     display: flex; align-items: center; justify-content: center; touch-action: manipulation;
   }
   .row-qty-btn:active { background: var(--orange); border-color: var(--orange); }
-  .row-qty-num { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--orange); min-width: 22px; text-align: center; }
+  .row-qty-num { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--orange); min-width: 24px; text-align: center; }
 
   /* ── CART VIEW ── */
-  .cart-top { padding: 14px; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .cart-section-title { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; margin-bottom: 12px; }
-  .branch-locked { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.25); border-radius: 8px; padding: 8px 12px; font-size: 12px; color: var(--orange); font-weight: 600; margin-bottom: 8px; }
-  .type-row { display: flex; gap: 6px; margin-bottom: 8px; }
+  .cart-top { padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .cart-section-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; margin-bottom: 14px; }
+  .branch-locked { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.25); border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--orange); font-weight: 600; margin-bottom: 12px; }
+  .type-row { display: flex; gap: 8px; margin-bottom: 12px; }
   .type-btn {
-    flex: 1; padding: 9px 4px; border-radius: 8px; border: 1px solid var(--border);
-    background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600;
+    flex: 1; padding: 12px 6px; border-radius: 10px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 600;
     cursor: pointer; font-family: var(--font-body); user-select: none; touch-action: manipulation;
   }
   .type-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-  .meta-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .meta-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
   .meta-input {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; font-family: var(--font-body); font-size: 13px; color: var(--text);
-    outline: none; width: 100%; margin-bottom: 8px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; font-family: var(--font-body); font-size: 16px; color: var(--text);
+    outline: none; width: 100%; margin-bottom: 12px;
   }
   .meta-input:focus { border-color: var(--text-dim); }
-  .cart-items-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
-  .cart-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 60px 20px; color: var(--text-dim); font-size: 13px; }
+  .cart-items-list { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cart-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
   .cart-row {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 12px; display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; display: flex; align-items: center; gap: 12px;
   }
   .cart-row-info { flex: 1; min-width: 0; }
-  .cart-row-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .cart-row-price { font-family: var(--font-mono); font-size: 12px; color: var(--orange); }
-  .qty-ctl { display: flex; gap: 6px; align-items: center; }
+  .cart-row-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+  .cart-row-price { font-family: var(--font-mono); font-size: 13px; color: var(--orange); }
+  .qty-ctl { display: flex; gap: 8px; align-items: center; }
   .qty-b {
-    width: 30px; height: 30px; border: 1px solid var(--border); background: var(--surface3);
-    color: var(--text); border-radius: 6px; cursor: pointer; font-size: 18px;
+    width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface3);
+    color: var(--text); border-radius: 8px; cursor: pointer; font-size: 20px;
     display: flex; align-items: center; justify-content: center; touch-action: manipulation;
   }
   .qty-b:active { background: var(--orange); border-color: var(--orange); }
   .cart-footer {
-    padding: 12px 14px; background: var(--surface); border-top: 1px solid var(--border);
+    padding: 16px; background: var(--surface); border-top: 1px solid var(--border);
     position: sticky; bottom: 0;
   }
-  .totals { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-  .totals.grand { font-size: 16px; font-weight: 700; color: var(--orange); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 2px; }
+  .totals { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+  .totals.grand { font-size: 18px; font-weight: 700; color: var(--orange); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
   .send-btn {
-    width: 100%; padding: 15px; background: var(--orange); color: #fff; border: none;
-    border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer;
-    font-family: var(--font-body); margin-top: 10px; touch-action: manipulation;
+    width: 100%; padding: 16px; background: var(--orange); color: #fff; border: none;
+    border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;
+    font-family: var(--font-body); margin-top: 12px; touch-action: manipulation;
     transition: background 0.15s;
   }
   .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .send-btn:not(:disabled):active { background: #c25a0a; }
   .clear-link {
-    width: 100%; padding: 8px; background: transparent; border: none;
-    color: var(--text-dim); font-size: 12px; cursor: pointer; font-family: var(--font-body); margin-top: 4px;
+    width: 100%; padding: 12px; background: transparent; border: none;
+    color: var(--text-dim); font-size: 13px; cursor: pointer; font-family: var(--font-body); margin-top: 6px;
   }
 
   /* ── ORDERS VIEW ── */
   .orders-header {
-    padding: 12px 14px; background: var(--surface); border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
   }
-  .orders-title { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; }
-  .orders-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
-  .my-order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .moc-head { padding: 9px 12px; background: var(--surface3); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .moc-id { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--orange); }
-  .moc-time { font-size: 10px; color: var(--text-dim); }
-  .moc-body { padding: 10px 12px; }
-  .moc-customer { font-family: var(--font-mono); font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .moc-type { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
-  .moc-items { font-size: 11px; color: var(--text-muted); background: var(--surface3); border-radius: 6px; padding: 6px 9px; margin-bottom: 8px; line-height: 1.8; }
-  .moc-note { font-size: 11px; color: var(--yellow); background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); border-radius: 5px; padding: 5px 8px; margin-bottom: 8px; }
-  .moc-bottom { display: flex; align-items: center; justify-content: space-between; }
-  .moc-total { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--green); }
-  .status-pill { font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .orders-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; }
+  .orders-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .my-order-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .moc-head { padding: 10px 14px; background: var(--surface3); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .moc-id { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--orange); }
+  .moc-time { font-size: 11px; color: var(--text-dim); }
+  .moc-body { padding: 14px; }
+  .moc-customer { font-family: var(--font-mono); font-size: 14px; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+  .moc-type { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+  .moc-items { font-size: 12px; color: var(--text-muted); background: var(--surface3); border-radius: 8px; padding: 10px; margin-bottom: 12px; line-height: 1.8; }
+  .moc-note { font-size: 12px; color: var(--yellow); background: rgba(234,179,8,0.08); border: 1px solid rgba(234,179,8,0.2); border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; }
+  .moc-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .moc-total { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--green); }
+  .status-pill { font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
   .s-new { background: rgba(234,179,8,.15); color: var(--yellow); border: 1px solid rgba(234,179,8,.3); }
   .s-preparing { background: rgba(249,115,22,.15); color: var(--orange); border: 1px solid rgba(249,115,22,.3); }
   .s-ready { background: rgba(59,130,246,.2); color: var(--blue); border: 1px solid rgba(59,130,246,.4); animation: pulseBlue 1.5s infinite; }
   .s-done { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
   @keyframes pulseBlue { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 8px rgba(59,130,246,.5)} }
-  .orders-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-dim); font-size: 13px; gap: 8px; }
+  .orders-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; gap: 12px; }
 
   /* ── READY BANNER ── */
   #ready-banner {
-    position: fixed; top: 50px; left: 0; right: 0; z-index: 500;
-    background: var(--blue); color: #fff; text-align: center; padding: 11px 16px;
-    font-size: 13px; font-weight: 600; transform: translateY(-100%);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    background: var(--blue); color: #fff; text-align: center; padding: 14px 16px;
+    font-size: 14px; font-weight: 600; transform: translateY(-100%);
     transition: transform 0.3s; border-bottom: 2px solid rgba(255,255,255,.25);
+    padding-top: max(14px, env(safe-area-inset-top));
   }
   #ready-banner.show { transform: translateY(0); }
 
   /* ── TOAST ── */
   #toast {
-    position: fixed; bottom: 70px; left: 50%;
+    position: fixed; bottom: 85px; left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: var(--surface2); color: var(--text); padding: 10px 18px;
-    border-radius: 8px; border: 1px solid var(--border);
-    transition: all 0.25s; z-index: 1000; font-size: 13px; white-space: nowrap; opacity: 0;
+    background: var(--surface2); color: var(--text); padding: 12px 20px;
+    border-radius: 10px; border: 1px solid var(--border);
+    transition: all 0.25s; z-index: 1000; font-size: 14px; white-space: nowrap; opacity: 0;
   }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -252,9 +258,10 @@
 
   /* ── OFFLINE INDICATOR ── */
   #offline-bar {
-    position: fixed; top: 50px; left: 0; right: 0; z-index: 490;
-    background: var(--red); color: #fff; text-align: center; padding: 7px;
-    font-size: 12px; font-weight: 600; display: none;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 490;
+    background: var(--red); color: #fff; text-align: center; padding: 10px;
+    font-size: 13px; font-weight: 600; display: none;
+    padding-top: max(10px, env(safe-area-inset-top));
   }
   #offline-bar.show { display: block; }
 </style>
@@ -309,7 +316,7 @@
   <div class="view active" id="view-menu">
     <div class="menu-header">
       <div class="search-wrap">
-        <span style="color:var(--text-dim);font-size:16px;">⌕</span>
+        <span style="color:var(--text-dim);font-size:18px;">⌕</span>
         <input type="search" id="searchInput" placeholder="Search menu..." autocomplete="off" oninput="renderMenu()">
       </div>
       <div class="cat-strip" id="catStrip"></div>
@@ -335,7 +342,7 @@
       <input type="text" class="meta-input" id="orderNote" placeholder="e.g. No spicy, extra sauce..." autocomplete="off">
     </div>
     <div class="cart-items-list" id="cartItemsList">
-      <div class="cart-empty-state"><span style="font-size:36px">🛒</span><span>Cart is empty — add items from menu</span></div>
+      <div class="cart-empty-state"><span style="font-size:42px">🛒</span><span>Cart is empty — add items from menu</span></div>
     </div>
     <div class="cart-footer">
       <div class="totals"><span>Subtotal</span><span id="subtotalVal">Rs. 0</span></div>
@@ -349,10 +356,10 @@
   <div class="view" id="view-orders">
     <div class="orders-header">
       <div class="orders-title">MY ORDERS</div>
-      <span style="font-size:11px;color:var(--text-dim);" id="ordersSubtitle">Today's shift</span>
+      <span style="font-size:12px;color:var(--text-dim);" id="ordersSubtitle">Today's shift</span>
     </div>
     <div class="orders-list" id="ordersList">
-      <div class="orders-empty"><span style="font-size:36px">📋</span><span>No orders yet this shift</span></div>
+      <div class="orders-empty"><span style="font-size:42px">📋</span><span>No orders yet this shift</span></div>
     </div>
   </div>
 
@@ -378,11 +385,8 @@
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
 <script>
-// ════════════════════════════════════════════════
-// FIREBASE CONFIG
-// ════════════════════════════════════════════════
+//[JS Logic remains entirely intact as it was, no logic removed/changed for full usability.]
 firebase.initializeApp({
   apiKey:            "AIzaSyAmHzs2Ne1u9XzQqvPxvLxhXPAMOfQvEQM",
   authDomain:        "crispypizza-aa734.firebaseapp.com",
@@ -392,58 +396,38 @@ firebase.initializeApp({
   appId:             "1:359399692159:web:72fb1804ffa198b229ac4a"
 });
 const db = firebase.firestore();
-
-// Enable offline persistence so orders survive brief network drops
 db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
 
-// ════════════════════════════════════════════════
-// SESSION STATE
-// ════════════════════════════════════════════════
 let currentWaiter  = null;
 let cart           =[];
 let orderType      = 'dine-in';
 let myOrders       =[];
 let firestoreUnsub = null;
-
 let MENU           = [];
 let CATS           = ['All'];
 let activeCat      = 'All';
 
-// ════════════════════════════════════════════════
-// OFFLINE DETECTION
-// ════════════════════════════════════════════════
 window.addEventListener('online',  () => document.getElementById('offline-bar').classList.remove('show'));
 window.addEventListener('offline', () => document.getElementById('offline-bar').classList.add('show'));
 
-// ════════════════════════════════════════════════
-// PIN LOGIC & FIREBASE AUTHENTICATION
-// ════════════════════════════════════════════════
 let pinBuf = '';
-
 function pp(d) {
   if (pinBuf.length >= 4) return;
   pinBuf += d;
   updPin();
   if (pinBuf.length === 4) setTimeout(ps, 160);
 }
-
 function pd() { pinBuf = pinBuf.slice(0, -1); updPin(); }
-
-function updPin() {
-  document.getElementById('pinDisplay').textContent = '●'.repeat(pinBuf.length) + '─'.repeat(4 - pinBuf.length);
-}
+function updPin() { document.getElementById('pinDisplay').textContent = '●'.repeat(pinBuf.length) + '─'.repeat(4 - pinBuf.length); }
 
 async function ps() {
   if (pinBuf.length !== 4) return;
-  
   try {
     const doc = await db.collection('users').doc(pinBuf).get();
-    
     if (doc.exists && doc.data().role === 'waiter') {
       currentWaiter = { ...doc.data(), pin: pinBuf };
       document.getElementById('pin-screen').classList.add('hidden');
       document.getElementById('pinErr').textContent = '';
-      
       onLogin(); 
       loadMenuFromFirebase(); 
     } else {
@@ -466,21 +450,13 @@ function showPinError() {
 }
 
 function lockScreen() {
-  pinBuf = '';
-  updPin();
-  currentWaiter = null;
+  pinBuf = ''; updPin(); currentWaiter = null;
   document.getElementById('pinErr').textContent = '';
   document.getElementById('pin-screen').classList.remove('hidden');
   if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; }
-  myOrders = [];
-  cart     =[];
-  updateCartBadge();
-  switchView('menu');
+  myOrders = []; cart =[]; updateCartBadge(); switchView('menu');
 }
 
-// ════════════════════════════════════════════════
-// ON LOGIN & LOAD MENU
-// ════════════════════════════════════════════════
 function onLogin() {
   document.getElementById('waiterInfo').textContent   = `${currentWaiter.name} · ${currentWaiter.branch}`;
   document.getElementById('branchDisplay').textContent = `🏪 ${currentWaiter.branch}`;
@@ -493,22 +469,14 @@ async function loadMenuFromFirebase() {
   try {
     const snap = await db.collection('menu').get();
     MENU = snap.docs.map(doc => doc.data());
-    // Sort menu so items show in a consistent order
     MENU.sort((a, b) => a.id - b.id); 
-    
-    CATS = ['All', ...new Set(MENU.map(i => i.cat))];
-    renderCatStrip();
-    renderMenu();
-    showToast('✅ Ready!');
+    CATS =['All', ...new Set(MENU.map(i => i.cat))];
+    renderCatStrip(); renderMenu(); showToast('✅ Ready!');
   } catch(e) {
-    console.error("Menu load error:", e);
-    showToast('⚠️ Failed to load menu.');
+    console.error("Menu load error:", e); showToast('⚠️ Failed to load menu.');
   }
 }
 
-// ════════════════════════════════════════════════
-// VIEW SWITCHING
-// ════════════════════════════════════════════════
 function switchView(v) {['menu', 'cart', 'orders'].forEach(id => {
     document.getElementById('view-' + id).classList.toggle('active', id === v);
     document.getElementById('nav-'  + id).classList.toggle('active', id === v);
@@ -517,9 +485,6 @@ function switchView(v) {['menu', 'cart', 'orders'].forEach(id => {
   if (v === 'orders') renderOrdersList();
 }
 
-// ════════════════════════════════════════════════
-// CATEGORY STRIP
-// ════════════════════════════════════════════════
 function renderCatStrip() {
   document.getElementById('catStrip').innerHTML = CATS.map(c =>
     `<button class="cat-chip ${c === activeCat ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
@@ -527,19 +492,12 @@ function renderCatStrip() {
 }
 function setCategory(c) { activeCat = c; renderCatStrip(); renderMenu(); }
 
-// ════════════════════════════════════════════════
-// MENU RENDER
-// ════════════════════════════════════════════════
 function renderMenu() {
   if (!currentWaiter) return;
   const q     = document.getElementById('searchInput').value.toLowerCase().trim();
-  const items = MENU.filter(i =>
-    (activeCat === 'All' || i.cat === activeCat) &&
-    i.name.toLowerCase().includes(q)
-  );
+  const items = MENU.filter(i => (activeCat === 'All' || i.cat === activeCat) && i.name.toLowerCase().includes(q));
   if (!items.length) {
-    document.getElementById('menuList').innerHTML =
-      '<div style="text-align:center;padding:48px 20px;color:var(--text-dim);font-size:13px;">No items found</div>';
+    document.getElementById('menuList').innerHTML = '<div style="text-align:center;padding:48px 20px;color:var(--text-dim);font-size:14px;">No items found</div>';
     return;
   }
   document.getElementById('menuList').innerHTML = items.map(i => {
@@ -569,17 +527,12 @@ function renderMenu() {
   }).join('');
 }
 
-// ════════════════════════════════════════════════
-// CART LOGIC
-// ════════════════════════════════════════════════
 function addToCart(id) {
   const item = MENU.find(i => i.id === id);
   if (!item) return;
   const ex = cart.find(c => c.id === id);
   if (ex) ex.qty++; else cart.push({ ...item, qty: 1 });
-  updateCartBadge();
-  renderMenu();
-  showToast(`${item.emoji} ${item.name} added`);
+  updateCartBadge(); renderMenu(); showToast(`${item.emoji} ${item.name} added`);
 }
 
 function changeQty(id, d) {
@@ -587,9 +540,7 @@ function changeQty(id, d) {
   if (idx === -1) return;
   cart[idx].qty += d;
   if (cart[idx].qty <= 0) cart.splice(idx, 1);
-  updateCartBadge();
-  renderMenu();
-  renderCartView();
+  updateCartBadge(); renderMenu(); renderCartView();
 }
 
 function updateCartBadge() {
@@ -605,11 +556,9 @@ function clearCart() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  // Reset order type buttons
   document.querySelectorAll('.type-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
   orderType = 'dine-in';
-  updateCartBadge();
-  renderCartView();
+  updateCartBadge(); renderCartView();
 }
 
 function setType(t, el) {
@@ -621,7 +570,7 @@ function setType(t, el) {
 function renderCartView() {
   const el = document.getElementById('cartItemsList');
   if (!cart.length) {
-    el.innerHTML = '<div class="cart-empty-state"><span style="font-size:36px">🛒</span><span>Cart is empty — add items from menu</span></div>';
+    el.innerHTML = '<div class="cart-empty-state"><span style="font-size:42px">🛒</span><span>Cart is empty — add items from menu</span></div>';
     document.getElementById('subtotalVal').textContent = 'Rs. 0';
     document.getElementById('grandTotal').textContent  = 'Rs. 0';
     document.getElementById('sendBtn').disabled = true;
@@ -635,7 +584,7 @@ function renderCartView() {
       </div>
       <div class="qty-ctl">
         <button class="qty-b" onclick="changeQty(${i.id},-1)">−</button>
-        <span style="min-width:24px;text-align:center;font-family:var(--font-mono);font-size:14px;font-weight:600;">${i.qty}</span>
+        <span style="min-width:24px;text-align:center;font-family:var(--font-mono);font-size:16px;font-weight:600;">${i.qty}</span>
         <button class="qty-b" onclick="changeQty(${i.id},1)">+</button>
       </div>
     </div>`).join('');
@@ -645,113 +594,59 @@ function renderCartView() {
   document.getElementById('sendBtn').disabled = false;
 }
 
-// ════════════════════════════════════════════════
-// SEND ORDER TO FIREBASE
-// ════════════════════════════════════════════════
 async function sendOrder() {
   if (!cart.length || !currentWaiter) return;
-
   const btn = document.getElementById('sendBtn');
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
+  btn.disabled = true; btn.textContent = 'Sending...';
 
   try {
-    // Generate unique local ID using Waiter Initial + Random 4 digits
     const localId = `${currentWaiter.name.slice(0, 2).toUpperCase()}${Math.floor(1000 + Math.random() * 9000)}`;
-    
-    // We don't await here to prevent the UI from freezing if offline
     db.collection('orders').add({
-      localId,
-      branch:     currentWaiter.branch,
-      items:      cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
-      type:       orderType,
-      source:     'Waiter',
-      customer:   document.getElementById('custName').value.trim()  || 'Walk-in',
-      phone:      document.getElementById('custPhone').value.trim() || '',
-      address:    '',
-      note:       document.getElementById('orderNote').value.trim() || '',
-      total:      cart.reduce((s, i) => s + i.price * i.qty, 0),
-      status:     'new',
-      placedBy:   'waiter',
-      waiterName: currentWaiter.name,
-      timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
+      localId, branch: currentWaiter.branch,
+      items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+      type: orderType, source: 'Waiter',
+      customer: document.getElementById('custName').value.trim() || 'Walk-in',
+      phone: document.getElementById('custPhone').value.trim() || '',
+      address: '', note: document.getElementById('orderNote').value.trim() || '',
+      total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+      status: 'new', placedBy: 'waiter', waiterName: currentWaiter.name,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
-    
-    showToast('✅ Order sent to kitchen!');
-    clearCart();
-    switchView('orders');
-    
+    showToast('✅ Order sent to kitchen!'); clearCart(); switchView('orders');
   } catch (e) {
-    console.error('Send order error:', e);
-    showToast('❌ Failed — check connection');
+    console.error('Send order error:', e); showToast('❌ Failed — check connection');
   }
-  
-  btn.disabled = false;
-  btn.textContent = 'Send to Kitchen';
+  btn.disabled = false; btn.textContent = 'Send to Kitchen';
 }
 
-// ════════════════════════════════════════════════
-// FIREBASE REAL-TIME LISTENER
-// Sorted & Filtered LOCALLY to prevent missing Index bugs.
-// ════════════════════════════════════════════════
 function startFirebaseListener() {
   if (firestoreUnsub) return;
-
   const startOfDay = new Date();
   if (startOfDay.getHours() < 4) startOfDay.setDate(startOfDay.getDate() - 1);
   startOfDay.setHours(4, 0, 0, 0);
 
-  firestoreUnsub = db.collection('orders')
-    .where('branch', '==', currentWaiter.branch)
-    .onSnapshot(
-      snap => {
-        const prev = new Map(myOrders.map(o => [o.firebaseId, o.status]));
-
-        let incoming = snap.docs.map(doc => {
-          const data = doc.data();
-          return {
-            firebaseId: doc.id,
-            ...data,
-            // Safely handle null timestamp
-            time: data.timestamp ? data.timestamp.toDate() : new Date(),
-          };
-        });
-
-        // 1. Filter locally for this specific waiter & today's shift
-        incoming = incoming.filter(o => 
-          o.placedBy === 'waiter' && 
-          o.waiterName === currentWaiter.name && 
-          o.time >= startOfDay
-        );
-
-        // 2. Sort locally by newest first
-        incoming.sort((a, b) => b.time - a.time);
-
-        myOrders = incoming;
-
-        // Alert when any order becomes "ready"
-        myOrders.forEach(o => {
-          if (prev.has(o.firebaseId) && prev.get(o.firebaseId) !== 'ready' && o.status === 'ready') {
-            showReadyBanner(o);
-          }
-        });
-
-        renderOrdersList();
-      },
-      err => {
-        console.error('Firestore listener error:', err);
-        showToast('⚠️ Listener error — check console');
-      }
-    );
+  firestoreUnsub = db.collection('orders').where('branch', '==', currentWaiter.branch).onSnapshot(snap => {
+    const prev = new Map(myOrders.map(o =>[o.firebaseId, o.status]));
+    let incoming = snap.docs.map(doc => {
+      const data = doc.data();
+      return { firebaseId: doc.id, ...data, time: data.timestamp ? data.timestamp.toDate() : new Date() };
+    });
+    incoming = incoming.filter(o => o.placedBy === 'waiter' && o.waiterName === currentWaiter.name && o.time >= startOfDay);
+    incoming.sort((a, b) => b.time - a.time);
+    myOrders = incoming;
+    myOrders.forEach(o => {
+      if (prev.has(o.firebaseId) && prev.get(o.firebaseId) !== 'ready' && o.status === 'ready') showReadyBanner(o);
+    });
+    renderOrdersList();
+  }, err => {
+    console.error('Firestore listener error:', err); showToast('⚠️ Listener error — check console');
+  });
 }
 
-// ════════════════════════════════════════════════
-// RENDER MY ORDERS LIST
-// ════════════════════════════════════════════════
 function renderOrdersList() {
   const el = document.getElementById('ordersList');
   if (!myOrders.length) {
-    el.innerHTML = '<div class="orders-empty"><span style="font-size:36px">📋</span><span>No orders yet this shift</span></div>';
+    el.innerHTML = '<div class="orders-empty"><span style="font-size:42px">📋</span><span>No orders yet this shift</span></div>';
     return;
   }
   const sc = { new: 's-new', preparing: 's-preparing', ready: 's-ready', done: 's-done' };
@@ -777,9 +672,6 @@ function renderOrdersList() {
   }).join('');
 }
 
-// ════════════════════════════════════════════════
-// READY BANNER & SOUND
-// ════════════════════════════════════════════════
 function showReadyBanner(o) {
   const b = document.getElementById('ready-banner');
   b.textContent = `✅ Order #${o.localId || o.firebaseId.slice(0,6)} for ${o.customer || 'Walk-in'} is READY — deliver now!`;
@@ -791,37 +683,24 @@ function showReadyBanner(o) {
 function playBeep() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();[0, 220, 440].forEach(delay => {
-      const osc = ctx.createOscillator();
-      const g   = ctx.createGain();
+      const osc = ctx.createOscillator(); const g = ctx.createGain();
       osc.connect(g); g.connect(ctx.destination);
       osc.type = 'sine'; osc.frequency.value = 1047;
       const t = ctx.currentTime + delay / 1000;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.38, t + 0.01);
-      g.gain.linearRampToValueAtTime(0, t + 0.12);
-      osc.start(t); osc.stop(t + 0.15);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.38, t + 0.01);
+      g.gain.linearRampToValueAtTime(0, t + 0.12); osc.start(t); osc.stop(t + 0.15);
     });
   } catch (e) {}
 }
 
-// ════════════════════════════════════════════════
-// TOAST NOTIFICATION
-// ════════════════════════════════════════════════
 let toastTimer = null;
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
-// Refresh order age labels every 30 seconds
 setInterval(() => { if (myOrders.length) renderOrdersList(); }, 30000);
-
 </script>
 </body>
 </html>
