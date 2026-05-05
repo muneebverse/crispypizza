@@ -117,13 +117,41 @@
   /* ════════════════════════════════
      RESPONSIVE POS VIEW (MOBILE)
   ════════════════════════════════ */
-  @media (max-width: 850px) {
-    #pos-view { flex-direction: column; }
-    .menu-panel { border-right: none; border-bottom: 1px solid var(--border); height: 50%; flex: 1; }
-    .order-panel { width: 100%; height: 50%; flex: 1; }
-    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+/* ════════════════════════════════
+   RESPONSIVE POS VIEW (MOBILE)
+════════════════════════════════ */
+@media (max-width: 850px) {
+  #pos-view { flex-direction: column; }
+  
+  .menu-panel { 
+    border-right: none; 
+    border-bottom: 1px solid var(--border); 
+    height: 45%; /* Slightly smaller to give the order panel more room */
+    flex: none; 
   }
-
+  
+  .order-panel { 
+    width: 100%; 
+    height: 55%; 
+    flex: none; 
+    display: block;       /* Allows internal sections to stack naturally */
+    overflow-y: auto;     /* IMPORTANT: Makes the entire order section scrollable */
+  }
+  
+  .order-header { 
+    overflow-y: visible;  /* Let the header expand fully */
+  }
+  
+  #cartItems { 
+    flex: none;           /* Allows cart to grow based on added items */
+    overflow-y: visible;  
+    min-height: 120px;    /* Keeps "Cart is empty" looking nice */
+  }
+  
+  .menu-grid { 
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+  }
+}
   /* ════════════════════════════════
      DASHBOARD VIEW
   ════════════════════════════════ */
